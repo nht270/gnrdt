@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Data</title>
+
+    <!-- Bootstrap css  -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- My style css -->
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <!-- Bootstrap js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+    <!-- header -->
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="/images/logo.png" alt="Logo" style="width:40px;" class="rounded-pill">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Shared generated data</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- body -->
+    {{{body}}}
+    <!-- footer -->
+    <div class="mt-5 p-4 bg-dark text-white text-center">
+        <p>Group 6</p>
+    </div>
+    <script>
+        let addfields = (btnAdd) => {
+            let countFields = btnAdd.previousElementSibling.value
+            let tblDocInfo = document.querySelector('.tbl-doc-info')
+            let templateForField = `
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-4">
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="text" name="fieldName" placeholder="Field name" style="width: 100px;">
+                        </div>
+                        <div class="col-6">
+                            <select name="dataType" onchange="changeOptionForSelect(this)">
+                                <option value="string">String</option>
+                                <option value="number" selected>Number</option>
+                                <option value="name">Name</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-8">
+                    <input type="radio" name="numberType" value="int"> Is integer
+                    <input type="radio" name="numberType" value="float"> Is float
+                </div>
+            </div>
+            `
+            for (let i = 1; i < countFields; i++) {
+                templateForField += templateForField
+            }
+
+            tblDocInfo.innerHTML += templateForField
+        }
+
+        let changeOptionForSelect = (select) => {
+            let selectedValue = select.value
+
+            let optionForDataType = {
+                'string': `
+                <input type="text" name="length" placeholder="Length">
+                <input type="checkbox" name="haveLowerCharater" checked> Have lower charater
+                <input type="checkbox" name="haveUpperCharater"> Have upper charater
+                <input type="checkbox" name="haveNumeric"> Have numeric
+                `,
+                'number': `
+                <input type="radio" name="numberType" value="int"> Is integer
+                <input type="radio" name="numberType" value="float"> Is float
+                `,
+                'name': ``
+            }
+
+            select
+                .parentElement
+                .parentElement
+                .parentElement
+                .nextElementSibling
+                .innerHTML = optionForDataType[selectedValue]
+        }
+
+        let generateBtn = document.querySelector('#generateBtn')
+        generateBtn.addEventListener('click', () => {
+            let databaseName = document.querySelector('input[name="databaseName"]').value
+
+            const tables = []
+            let tblDocNames = document.querySelectorAll('input[name="tableDocName"]')
+            let tblDocInfos = document.querySelectorAll('.tbl-doc-info')
+            for (let i = 0; i < tblDocNames.length; i++) {
+                const fields = []
+                let wrapperFields = tblDocInfos[i].children
+                for (let j = 1; j < wrapperFields.length; j++) {
+                    let name = wrapperFields[j].children[0].children[0].children[0].children[0].value
+                    let type = wrapperFields[j].children[0].children[0].children[1].children[0].value
+                    let datatype = { type }
+                    let field = { name, datatype }
+                    fields.push(field)
+                }
+                let tableName = tblDocNames[i].value
+                let table = { tableName, fields }
+                tables.push(table)
+            }
+            let schema = { databaseName, tables }
+            fetch('http://localhost:8080/generate',
+                {
+                    method: 'post',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ schema })
+                }).then(rs => rs.text())
+                .then(rs => {
+                    document.querySelector('#req-content').innerHTML = rs
+                })
+        })
+
+
+        // {
+//         tableName: 'test_table',
+//         primaryKeys: ['mssv'],
+//         fields:
+//             [
+//                 {
+//                     name: 'mssv', datatype: {
+//                         type: 'template', template:
+//                             [
+//                                 { type: 'set', set: ['DH', 'CD'] },
+//                                 { type: 'number', min: 1, max: 5, isInt: true },
+//                                 { type: 'number', min: 10, max: 22, isInt: true },
+//                                 { type: 'freedom', value: '00' },
+//                                 { type: 'string', size: 3, haveLower: false, haveUpper: false, haveNumberic: true },
+//                             ]
+//                     }
+//                 },
+//                 { name: 'name', datatype: { type: 'name' } },
+//                 { name: 'age', datatype: { type: 'number', isInt: true, min: 20, max: 50 } },
+//                 { name: 'address', datatype: { type: 'address' } }
+//             ]
+//     }
+    </script>
+</body>
+
+</html>

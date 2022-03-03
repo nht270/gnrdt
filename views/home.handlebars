@@ -1,0 +1,88 @@
+<div class="container">
+    <h1 id="page-title">Generate Data</h1>
+    <div class="main-wrapper">
+        <span class="label-wrapper">
+            <h3>Database</h3>
+        </span>
+        <div id="database-info">
+            <div class="database-name">
+                <input type="text" name="databaseName" placeholder="Database name">
+            </div>
+            <div id="database-type">
+                <input type="radio" name="databaseType" value="JSON"> JSON
+                <input type="radio" name="databaseType" value="SQL" style="margin-left: 20px"> SQL
+            </div>
+        </div>
+        <div class="sub-wrapper">
+            <span class="label-wrapper">
+                <h4>Tables/Collections</h4>
+            </span>
+            <div class="pre-fields">
+                <div class="tbl-doc-name">
+                    <input type="text" name="tableDocName" placeholder="Tables/ Collections name">
+                </div>
+                <div class="add-fields">
+                    Add fiels: <input type="text" name="addFields" value="1">
+                    <button type="button" onclick="addfields(this)" class="btn btn-primary">Add</button>
+                </div>
+            </div>
+            <div class="tbl-doc-info" style="margin: 0 100px;">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="row">
+                            <div class="col-6">Field name</div>
+                            <div class="col-6">Data type</div>
+                        </div>
+                    </div>
+                    <div class="col-8">Option</div>
+                </div>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-4">
+                        <div class="row">
+                            <div class="col-6">
+                                <input type="text" name="fieldName" placeholder="Field name" style="width: 100px;">
+                            </div>
+                            <div class="col-6">
+                                <select name="dataType">
+                                    <option value="string">String</option>
+                                    <option value="number">Number</option>
+                                    <option value="name">Name</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <input type="text" name="length" placeholder="Length">
+                        <input type="checkbox" name="haveLowerCharater" checked> Have lower charater
+                        <input type="checkbox" name="haveUpperCharater"> Have upper charater
+                        <input type="checkbox" name="haveNumeric"> Have numeric
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-4">
+                        <div class="row">
+                            <div class="col-6">
+                                <input type="text" name="fieldName" placeholder="Field name" style="width: 100px;">
+                            </div>
+                            <div class="col-6">
+                                <select name="dataType">
+                                    <option value="string">String</option>
+                                    <option value="number" selected>Number</option>
+                                    <option value="name">Name</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <input type="radio" name="numberType" value="int"> Is integer
+                        <input type="radio" name="numberType" value="float"> Is float
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary" style="margin: 10px 100px">Add new table/collection</button>
+        <button class="btn btn-primary" id="generateBtn" style="margin: 10px">Generate data</button>
+    </div>
+    <div id="req-content">
+    </div>
+</div>

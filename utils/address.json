@@ -1,0 +1,1119 @@
+{
+    "provinces": [
+        {
+            "name": "An Giang",
+            "districts": [
+                "An Phú",
+                "Châu Đốc",
+                "Châu Phú",
+                "Châu Thành",
+                "Chợ Mới",
+                "Long Xuyên",
+                "Phú Tân",
+                "Tân Châu",
+                "Thoại Sơn",
+                "Tịnh Biên",
+                "Tri Tôn"
+            ]
+        },
+        {
+            "name": "Bà Rịa - Vũng Tàu",
+            "districts": [
+                "Bà Rịa",
+                "Châu Đức",
+                "Côn Đảo",
+                "Đất Đỏ",
+                "Long Điền",
+                "Phú Mỹ",
+                "Vũng Tàu",
+                "Xuyên Mộc"
+            ]
+        },
+        {
+            "name": "Bạc Liêu",
+            "districts": [
+                "Đông Hải",
+                "Giá Rai",
+                "Hòa Bình",
+                "Hồng Dân",
+                "Phước Long",
+                "Vĩnh Lợi"
+            ]
+        },
+        {
+            "name": "Bắc Giang",
+            "districts": [
+                "Hiệp Hòa",
+                "Lạng Giang",
+                "Lục Nam",
+                "Lục Ngạn",
+                "Sơn Động",
+                "Tân Yên",
+                "Việt Yên",
+                "Yên Dũng",
+                "Yên Thế"
+            ]
+        },
+        {
+            "name": "Bắc Kạn",
+            "districts": [
+                "Ba Bể",
+                "Bạch Thông",
+                "Chợ Đồn",
+                "Chợ Mới",
+                "Na Rì",
+                "Ngân Sơn",
+                "Pác Nặm"
+            ]
+        },
+        {
+            "name": "Bắc Ninh",
+            "districts": [
+                "Gia Bình",
+                "Lương Tài",
+                "Quế Võ",
+                "Thuận Thành",
+                "Tiên Du",
+                "Từ Sơn",
+                "Yên Phong"
+            ]
+        },
+        {
+            "name": "Bến Tre",
+            "districts": [
+                "Ba Tri",
+                "Bình Đại",
+                "Châu Thành",
+                "Chợ Lách",
+                "Giồng Trôm",
+                "Mỏ Cày Bắc",
+                "Mỏ Cày Nam",
+                "Thạnh Phú"
+            ]
+        },
+        {
+            "name": "Bình Dương",
+            "districts": [
+                "Bắc Tân Uyên",
+                "Bàu Bàng",
+                "Bến Cát",
+                "Dầu Tiếng",
+                "Dĩ An",
+                "Phú Giáo",
+                "Tân Uyên",
+                "Thủ Dầu Một",
+                "Thuận An"
+            ]
+        },
+        {
+            "name": "Bình Định",
+            "districts": [
+                "An Lão",
+                "An Nhơn",
+                "Hoài Ân",
+                "Hoài Nhơn",
+                "Phù Cát",
+                "Phù Mỹ",
+                "Quy Nhơn",
+                "Tây Sơn",
+                "Tuy Phước",
+                "Vân Canh",
+                "Vĩnh Thạnh"
+            ]
+        },
+        {
+            "name": "Bình Phước",
+            "districts": [
+                "Bình Long",
+                "Bù Đăng",
+                "Bù Đốp",
+                "Bù Gia Mập",
+                "Chơn Thành",
+                "Đồng Phú",
+                "Đồng Xoài",
+                "Hớn Quản",
+                "Lộc Ninh",
+                "Phú Riềng",
+                "Phước Long"
+            ]
+        },
+        {
+            "name": "Bình Thuận",
+            "districts": [
+                "Bắc Bình",
+                "Đức Linh",
+                "Hàm Tân",
+                "Hàm Thuận Bắc",
+                "Hàm Thuận Nam",
+                "La Gi",
+                "Phan Thiết",
+                "Phú Quý",
+                "Tánh Linh",
+                "Tuy Phong"
+            ]
+        },
+        {
+            "name": "Cà Mau",
+            "districts": [
+                "Cái Nước",
+                "Đầm Dơi",
+                "Năm Căn",
+                "Ngọc Hiển",
+                "Phú Tân",
+                "Thới Bình",
+                "Trần Văn Thời",
+                "U Minh"
+            ]
+        },
+        {
+            "name": "Cao Bằng",
+            "districts": [
+                "Bảo Lạc",
+                "Bảo Lâm",
+                "Hạ Lang",
+                "Hà Quảng",
+                "Hòa An",
+                "Nguyên Bình",
+                "Quảng Hòa",
+                "Thạch An",
+                "Trùng Khánh"
+            ]
+        },
+        {
+            "name": "Cần Thơ",
+            "districts": [
+                "Bình Thủy",
+                "Cái Răng",
+                "Cờ Đỏ",
+                "Ninh Kiều",
+                "Ô Môn",
+                "Phong Điền",
+                "Thới Lai",
+                "Thốt Nốt",
+                "Vĩnh Thạnh"
+            ]
+        },
+        {
+            "name": "Đà Nẵng",
+            "districts": [
+                "Cẩm Lệ",
+                "Hải Châu",
+                "Hòa Vang",
+                "Hoàng Sa",
+                "Liên Chiểu",
+                "Ngũ Hành Sơn",
+                "Sơn Trà",
+                "Thanh Khê"
+            ]
+        },
+        {
+            "name": "Đắk Lắk",
+            "districts": [
+                "Buôn Đôn",
+                "Buôn Hồ",
+                "Buôn Ma Thuột",
+                "Cư Kuin",
+                "Cư M'gar",
+                "Ea H'leo",
+                "Ea Kar",
+                "Ea Súp",
+                "Krông Ana",
+                "Krông Bông",
+                "Krông Búk",
+                "Krông Năng",
+                "Krông Pắc",
+                "Lắk",
+                "M'Drắk"
+            ]
+        },
+        {
+            "name": "Đắk Nông",
+            "districts": [
+                "Cư Jút",
+                "Đắk Glong",
+                "Đắk Mil",
+                "Đắk R'lấp",
+                "Đắk Song",
+                "Gia Nghĩa",
+                "Krông Nô",
+                "Tuy Đức"
+            ]
+        },
+        {
+            "name": "Điện Biên",
+            "districts": [
+                "Điện Biên Đông",
+                "Điện Biên Phủ",
+                "Mường Ảng",
+                "Mường Chà",
+                "Mường Lay",
+                "Mường Nhé",
+                "Nậm Pồ",
+                "Tủa Chùa",
+                "Tuần Giáo"
+            ]
+        },
+        {
+            "name": "Đồng Nai",
+            "districts": [
+                "Biên Hòa",
+                "Cẩm Mỹ",
+                "Định Quán",
+                "Long Khánh",
+                "Long Thành",
+                "Nhơn Trạch",
+                "Tân Phú",
+                "Thống Nhất",
+                "Trảng Bom",
+                "Vĩnh Cửu",
+                "Xuân Lộc"
+            ]
+        },
+        {
+            "name": "Đồng Tháp",
+            "districts": [
+                "Cao Lãnh",
+                "Cao Lãnh",
+                "Châu Thành",
+                "Hồng Ngự",
+                "Hồng Ngự",
+                "Lai Vung",
+                "Lấp Vò",
+                "Sa Đéc",
+                "Tam Nông",
+                "Tân Hồng",
+                "Thanh Bình",
+                "Tháp Mười"
+            ]
+        },
+        {
+            "name": "Gia Lai",
+            "districts": [
+                "An Khê",
+                "Ayun Pa",
+                "Chư Păh",
+                "Chư Prông",
+                "Chư Pưh",
+                "Chư Sê",
+                "Đak Đoa",
+                "Đak Pơ",
+                "Đức Cơ",
+                "Ia Grai",
+                "Ia Pa",
+                "Kbang",
+                "Kông Chro",
+                "Krông Pa",
+                "Mang Yang",
+                "Phú Thiện",
+                "Pleiku"
+            ]
+        },
+        {
+            "name": "Hà Giang",
+            "districts": [
+                "Bắc Mê",
+                "Bắc Quang",
+                "Đồng Văn",
+                "Hoàng Su Phì",
+                "Mèo Vạc",
+                "Quản Bạ",
+                "Quang Bình",
+                "Vị Xuyên",
+                "Xín Mần",
+                "Yên Minh"
+            ]
+        },
+        {
+            "name": "Hà Nam",
+            "districts": [
+                "Bình Lục",
+                "Duy Tiên",
+                "Kim Bảng",
+                "Lý Nhân",
+                "Phủ Lý",
+                "Thanh Liêm"
+            ]
+        },
+        {
+            "name": "Hà Nội",
+            "districts": [
+                "Ba Đình",
+                "Ba Vì",
+                "Bắc Từ Liêm",
+                "Cầu Giấy",
+                "Chương Mỹ",
+                "Đan Phượng",
+                "Đông Anh",
+                "Đống Đa",
+                "Gia Lâm",
+                "Hà Đông",
+                "Hai Bà Trưng",
+                "Hoài Đức",
+                "Hoàn Kiếm",
+                "Hoàng Mai",
+                "Long Biên",
+                "Mê Linh",
+                "Mỹ Đức",
+                "Nam Từ Liêm",
+                "Phú Xuyên",
+                "Phúc Thọ",
+                "Quốc Oai",
+                "Sóc Sơn",
+                "Sơn Tây",
+                "Tây Hồ",
+                "Thạch Thất",
+                "Thanh Oai",
+                "Thanh Trì",
+                "Thanh Xuân",
+                "Thường Tín",
+                "Ứng Hòa"
+            ]
+        },
+        {
+            "name": "Hà Tĩnh",
+            "districts": [
+                "Cẩm Xuyên",
+                "Can Lộc",
+                "Đức Thọ",
+                "Hồng Lĩnh",
+                "Hương Khê",
+                "Hương Sơn",
+                "Kỳ Anh",
+                "Kỳ Anh",
+                "Lộc Hà",
+                "Nghi Xuân",
+                "Thạch Hà",
+                "Vũ Quang"
+            ]
+        },
+        {
+            "name": "Hải Dương",
+            "districts": [
+                "Bình Giang",
+                "Cẩm Giàng",
+                "Chí Linh",
+                "Gia Lộc",
+                "Kim Thành",
+                "Kinh Môn",
+                "Nam Sách",
+                "Ninh Giang",
+                "Thanh Hà",
+                "Thanh Miện",
+                "Tứ Kỳ"
+            ]
+        },
+        {
+            "name": "Hải Phòng",
+            "districts": [
+                "An Dương",
+                "An Lão",
+                "Bạch Long Vĩ",
+                "Cát Hải",
+                "Đồ Sơn",
+                "Dương Kinh",
+                "Hải An",
+                "Hồng Bàng",
+                "Kiến An",
+                "Kiến Thụy",
+                "Lê Chân",
+                "Ngô Quyền",
+                "Thủy Nguyên",
+                "Tiên Lãng",
+                "Vĩnh Bảo"
+            ]
+        },
+        {
+            "name": "Hậu Giang",
+            "districts": [
+                "Châu Thành",
+                "Châu Thành A",
+                "Long Mỹ",
+                "Long Mỹ",
+                "Ngã Bảy",
+                "Phụng Hiệp",
+                "Vị Thanh",
+                "Vị Thủy"
+            ]
+        },
+        {
+            "name": "Hòa Bình",
+            "districts": [
+                "Cao Phong",
+                "Đà Bắc",
+                "Kim Bôi",
+                "Lạc Sơn",
+                "Lạc Thủy",
+                "Lương Sơn",
+                "Mai Châu",
+                "Tân Lạc",
+                "Yên Thủy"
+            ]
+        },
+        {
+            "name": "Hưng Yên",
+            "districts": [
+                "Ân Thi",
+                "Khoái Châu",
+                "Kim Động",
+                "Mỹ Hào",
+                "Phù Cừ",
+                "Tiên Lữ",
+                "Văn Giang",
+                "Văn Lâm",
+                "Yên Mỹ"
+            ]
+        },
+        {
+            "name": "Khánh Hòa",
+            "districts": [
+                "Cam Lâm",
+                "Cam Ranh",
+                "Diên Khánh",
+                "Khánh Sơn",
+                "Khánh Vĩnh",
+                "Nha Trang",
+                "Ninh Hòa",
+                "Trường Sa",
+                "Vạn Ninh"
+            ]
+        },
+        {
+            "name": "Kiên Giang",
+            "districts": [
+                "An Biên",
+                "An Minh",
+                "Châu Thành",
+                "Giang Thành",
+                "Giồng Riềng",
+                "Gò Quao",
+                "Hà Tiên",
+                "Hòn Đất",
+                "Kiên Hải",
+                "Kiên Lương",
+                "Phú Quốc",
+                "Rạch Giá",
+                "Tân Hiệp",
+                "U Minh Thượng",
+                "Vĩnh Thuận"
+            ]
+        },
+        {
+            "name": "Kon Tum",
+            "districts": [
+                "Đăk Glei",
+                "Đăk Hà",
+                "Đăk Tô",
+                "Ia H'Drai",
+                "Kon Plông",
+                "Kon Rẫy",
+                "Ngọc Hồi",
+                "Sa Thầy",
+                "Tu Mơ Rông"
+            ]
+        },
+        {
+            "name": "Lai Châu",
+            "districts": [
+                "Lai Châu",
+                "Mường Tè",
+                "Nậm Nhùn",
+                "Phong Thổ",
+                "Sìn Hồ",
+                "Tam Đường",
+                "Tân Uyên",
+                "Than Uyên"
+            ]
+        },
+        {
+            "name": "Lạng Sơn",
+            "districts": [
+                "Bắc Sơn",
+                "Bình Gia",
+                "Cao Lộc",
+                "Chi Lăng",
+                "Đình Lập",
+                "Hữu Lũng",
+                "Lộc Bình",
+                "Tràng Định",
+                "Văn Lãng",
+                "Văn Quan"
+            ]
+        },
+        {
+            "name": "Lào Cai",
+            "districts": [
+                "Bắc Hà",
+                "Bảo Thắng",
+                "Bảo Yên",
+                "Bát Xát",
+                "Lào Cai",
+                "Mường Khương",
+                "Sa Pa",
+                "Si Ma Cai",
+                "Văn Bàn"
+            ]
+        },
+        {
+            "name": "Lâm Đồng",
+            "districts": [
+                "Bảo Lâm",
+                "Bảo Lộc",
+                "Cát Tiên",
+                "Đạ Huoai",
+                "Đà Lạt",
+                "Đạ Tẻh",
+                "Đam Rông",
+                "Di Linh",
+                "Đơn Dương",
+                "Đức Trọng",
+                "Lạc Dương",
+                "Lâm Hà"
+            ]
+        },
+        {
+            "name": "Long An",
+            "districts": [
+                "Bến Lức",
+                "Cần Đước",
+                "Cần Giuộc",
+                "Châu Thành",
+                "Đức Hòa",
+                "Đức Huệ",
+                "Kiến Tường",
+                "Mộc Hóa",
+                "Tân An",
+                "Tân Hưng",
+                "Tân Thạnh",
+                "Tân Trụ",
+                "Thạnh Hóa",
+                "Thủ Thừa",
+                "Vĩnh Hưng"
+            ]
+        },
+        {
+            "name": "Nam Định",
+            "districts": [
+                "Giao Thủy",
+                "Hải Hậu",
+                "Mỹ Lộc",
+                "Nam Trực",
+                "Nghĩa Hưng",
+                "Trực Ninh",
+                "Vụ Bản",
+                "Xuân Trường",
+                "Ý Yên"
+            ]
+        },
+        {
+            "name": "Nghệ An",
+            "districts": [
+                "Anh Sơn",
+                "Con Cuông",
+                "Cửa Lò",
+                "Diễn Châu",
+                "Đô Lương",
+                "Hoàng Mai",
+                "Hưng Nguyên",
+                "Kỳ Sơn",
+                "Nam Đàn",
+                "Nghi Lộc",
+                "Nghĩa Đàn",
+                "Quế Phong",
+                "Quỳ Châu",
+                "Quỳ Hợp",
+                "Quỳnh Lưu",
+                "Tân Kỳ",
+                "Thái Hòa",
+                "Thanh Chương",
+                "Tương Dương",
+                "Vinh",
+                "Yên Thành"
+            ]
+        },
+        {
+            "name": "Ninh Bình",
+            "districts": [
+                "Gia Viễn",
+                "Hoa Lư",
+                "Kim Sơn",
+                "Nho Quan",
+                "Ninh Bình",
+                "Tam Điệp",
+                "Yên Khánh",
+                "Yên Mô"
+            ]
+        },
+        {
+            "name": "Ninh Thuận",
+            "districts": [
+                "Bác Ái",
+                "Ninh Hải",
+                "Ninh Phước",
+                "Ninh Sơn",
+                "Phan Rang - Tháp Chàm",
+                "Thuận Bắc",
+                "Thuận Nam"
+            ]
+        },
+        {
+            "name": "Phú Thọ",
+            "districts": [
+                "Cẩm Khê",
+                "Đoan Hùng",
+                "Hạ Hòa",
+                "Lâm Thao",
+                "Phù Ninh",
+                "Tam Nông",
+                "Tân Sơn",
+                "Thanh Ba",
+                "Thanh Sơn",
+                "Thanh Thủy",
+                "Việt Trì",
+                "Yên Lập"
+            ]
+        },
+        {
+            "name": "Phú Yên",
+            "districts": [
+                "Đông Hòa",
+                "Đồng Xuân",
+                "Phú Hòa",
+                "Sơn Hòa",
+                "Sông Cầu",
+                "Sông Hinh",
+                "Tây Hòa",
+                "Tuy An",
+                "Tuy Hòa"
+            ]
+        },
+        {
+            "name": "Quảng Bình",
+            "districts": [
+                "Ba Đồn",
+                "Bố Trạch",
+                "Đồng Hới",
+                "Lệ Thủy",
+                "Minh Hóa",
+                "Quảng Ninh",
+                "Quảng Trạch",
+                "Tuyên Hóa"
+            ]
+        },
+        {
+            "name": "Quảng Nam",
+            "districts": [
+                "Bắc Trà My",
+                "Đại Lộc",
+                "Điện Bàn",
+                "Đông Giang",
+                "Duy Xuyên",
+                "Hiệp Đức",
+                "Hội An",
+                "Nam Giang",
+                "Nam Trà My",
+                "Nông Sơn",
+                "Núi Thành",
+                "Phú Ninh",
+                "Phước Sơn",
+                "Quế Sơn",
+                "Tam Kỳ",
+                "Tây Giang",
+                "Thăng Bình",
+                "Tiên Phước"
+            ]
+        },
+        {
+            "name": "Quảng Ngãi",
+            "districts": [
+                "Ba Tơ",
+                "Bình Sơn",
+                "Đức Phổ",
+                "Lý Sơn",
+                "Minh Long",
+                "Mộ Đức",
+                "Nghĩa Hành",
+                "Sơn Hà",
+                "Sơn Tây",
+                "Sơn Tịnh",
+                "Trà Bồng",
+                "Tư Nghĩa"
+            ]
+        },
+        {
+            "name": "Quảng Ninh",
+            "districts": [
+                "Ba Chẽ",
+                "Bình Liêu",
+                "Cẩm Phả",
+                "Cô Tô",
+                "Đầm Hà",
+                "Đông Triều",
+                "Hạ Long",
+                "Hải Hà",
+                "Móng Cái",
+                "Quảng Yên",
+                "Tiên Yên",
+                "Uông Bí",
+                "Vân Đồn"
+            ]
+        },
+        {
+            "name": "Quảng Trị",
+            "districts": [
+                "Cam Lộ",
+                "Cồn Cỏ",
+                "Đakrông",
+                "Đông Hà",
+                "Gio Linh",
+                "Hải Lăng",
+                "Hướng Hóa",
+                "Triệu Phong",
+                "Vĩnh Linh"
+            ]
+        },
+        {
+            "name": "Sóc Trăng",
+            "districts": [
+                "Châu Thành",
+                "Cù Lao Dung",
+                "Kế Sách",
+                "Long Phú",
+                "Mỹ Tú",
+                "Mỹ Xuyên",
+                "Ngã Năm",
+                "Thạnh Trị",
+                "Trần Đề",
+                "Vĩnh Châu"
+            ]
+        },
+        {
+            "name": "Sơn La",
+            "districts": [
+                "Bắc Yên",
+                "Mai Sơn",
+                "Mộc Châu",
+                "Mường La",
+                "Phù Yên",
+                "Quỳnh Nhai",
+                "Sông Mã",
+                "Sốp Cộp",
+                "Thuận Châu",
+                "Vân Hồ",
+                "Yên Châu"
+            ]
+        },
+        {
+            "name": "Tây Ninh",
+            "districts": [
+                "Bến Cầu",
+                "Châu Thành",
+                "Dương Minh Châu",
+                "Gò Dầu",
+                "Hòa Thành",
+                "Tân Biên",
+                "Tân Châu",
+                "Trảng Bàng"
+            ]
+        },
+        {
+            "name": "Thái Bình",
+            "districts": [
+                "Đông Hưng",
+                "Hưng Hà",
+                "Kiến Xương",
+                "Quỳnh Phụ",
+                "Thái Thụy",
+                "Tiền Hải",
+                "Vũ Thư"
+            ]
+        },
+        {
+            "name": "Thái Nguyên",
+            "districts": [
+                "Đại Từ",
+                "Định Hóa",
+                "Đồng Hỷ",
+                "Phổ Yên",
+                "Phú Bình",
+                "Phú Lương",
+                "Sông Công",
+                "Võ Nhai"
+            ]
+        },
+        {
+            "name": "Thanh Hóa",
+            "districts": [
+                "Bá Thước",
+                "Bỉm Sơn",
+                "Cẩm Thủy",
+                "Đông Sơn",
+                "Hà Trung",
+                "Hậu Lộc",
+                "Hoằng Hóa",
+                "Lang Chánh",
+                "Mường Lát",
+                "Nga Sơn",
+                "Nghi Sơn",
+                "Ngọc Lặc",
+                "Như Thanh",
+                "Như Xuân",
+                "Nông Cống",
+                "Quan Hóa",
+                "Quan Sơn",
+                "Quảng Xương",
+                "Sầm Sơn",
+                "Thạch Thành",
+                "Thiệu Hóa",
+                "Thọ Xuân",
+                "Thường Xuân",
+                "Triệu Sơn",
+                "Vĩnh Lộc",
+                "Yên Định"
+            ]
+        },
+        {
+            "name": "Thành phố Hồ Chí Minh",
+            "districts": [
+                "Bình Chánh",
+                "Bình Tân",
+                "Bình Thạnh",
+                "Cần Giờ",
+                "Củ Chi",
+                "Gò Vấp",
+                "Hóc Môn",
+                "Nhà Bè",
+                "Phú Nhuận",
+                "Quận 1",
+                "Quận 3",
+                "Quận 4",
+                "Quận 5",
+                "Quận 6",
+                "Quận 7",
+                "Quận 8",
+                "Quận 10",
+                "Quận 11",
+                "Quận 12",
+                "Tân Bình",
+                "Tân Phú",
+                "Thủ Đức"
+            ]
+        },
+        {
+            "name": "Thừa Thiên Huế",
+            "districts": [
+                "A Lưới",
+                "Huế",
+                "Hương Thủy",
+                "Hương Trà",
+                "Nam Đông",
+                "Phong Điền",
+                "Phú Lộc",
+                "Phú Vang",
+                "Quảng Điền"
+            ]
+        },
+        {
+            "name": "Tiền Giang",
+            "districts": [
+                "Cái Bè",
+                "Cai Lậy",
+                "Cai Lậy",
+                "Châu Thành",
+                "Chợ Gạo",
+                "Gò Công",
+                "Gò Công Đông",
+                "Gò Công Tây",
+                "Mỹ Tho",
+                "Tân Phú Đông",
+                "Tân Phước"
+            ]
+        },
+        {
+            "name": "Trà Vinh",
+            "districts": [
+                "Càng Long",
+                "Cầu Kè",
+                "Cầu Ngang",
+                "Châu Thành",
+                "Duyên Hải",
+                "Duyên Hải",
+                "Tiểu Cần",
+                "Trà Cú"
+            ]
+        },
+        {
+            "name": "Tuyên Quang",
+            "districts": [
+                "Chiêm Hóa",
+                "Hàm Yên",
+                "Lâm Bình",
+                "Na Hang",
+                "Sơn Dương",
+                "Yên Sơn"
+            ]
+        },
+        {
+            "name": "Vĩnh Long",
+            "districts": [
+                "Bình Minh",
+                "Bình Tân",
+                "Long Hồ",
+                "Mang Thít",
+                "Tam Bình",
+                "Trà Ôn",
+                "Vũng Liêm"
+            ]
+        },
+        {
+            "name": "Vĩnh Phúc",
+            "districts": [
+                "Bình Xuyên",
+                "Lập Thạch",
+                "Phúc Yên",
+                "Sông Lô",
+                "Tam Đảo",
+                "Tam Dương",
+                "Vĩnh Tường",
+                "Vĩnh Yên",
+                "Yên Lạc"
+            ]
+        },
+        {
+            "name": "Yên Bái",
+            "districts": [
+                "Lục Yên",
+                "Mù Cang Chải",
+                "Nghĩa Lộ",
+                "Trạm Tấu",
+                "Trấn Yên",
+                "Văn Chấn",
+                "Văn Yên",
+                "Yên Bình"
+            ]
+        }
+    ],
+    "streets": [
+        "Alexandre de Rhodes",
+        "Bà Lê Chân",
+        "Bùi Thị Xuân",
+        "Bùi Viện",
+        "Cách Mạng Tháng Tám",
+        "Calmette",
+        "Cao Bá Nhạ",
+        "Cao Bá Quát",
+        "Cô Bắc",
+        "Cô Giang",
+        "Cống Quỳnh",
+        "Chu Mạnh Trinh",
+        "Chương Dương",
+        "Đặng Dung",
+        "Đặng Tất",
+        "Đặng Thị Nhu",
+        "Đặng Trần Côn",
+        "Đề Thám",
+        "Đinh Công Tráng",
+        "Đông Du",
+        "Đồng Khởi",
+        "Hai Bà Trưng",
+        "Hải Triều",
+        "Hàm Nghi",
+        "Hàn Thuyên",
+        "Hòa Mỹ",
+        "Hồ Hảo Hớn",
+        "Hồ Huấn Nghiệp",
+        "Hồ Tùng Mậu",
+        "Hoàng Sa",
+        "Huyền Quang",
+        "Huyền Trân Công Chúa",
+        "Huỳnh Khương Ninh",
+        "Huỳnh Thúc Kháng",
+        "Ký Con",
+        "Lê Anh Xuân",
+        "Lê Công Kiều",
+        "Lê Duẩn",
+        "Lê Lai",
+        "Lê Lợi",
+        "Lê Thánh Tôn",
+        "Lê Thị Hồng Gấm",
+        "Lê Thị Riêng",
+        "Lê Văn Hưu",
+        "Lương Hữu Khánh",
+        "Lưu Văn Lang",
+        "Lý Tự Trọng",
+        "Lý Văn Phức",
+        "Mã Lộ",
+        "Mạc Đĩnh Chi",
+        "Mạc Thị Bưởi",
+        "Mai Thị Lựu",
+        "Nam Kỳ Khởi Nghĩa",
+        "Nam Quốc Cang",
+        "Ngô Đức Kế",
+        "Ngô Văn Năm",
+        "Nguyễn Bỉnh Khiêm",
+        "Nguyễn Cảnh Chân",
+        "Nguyễn Công Trứ",
+        "Nguyễn Cư Trinh",
+        "Nguyễn Du",
+        "Nguyễn Đình Chiểu",
+        "Nguyễn Huệ",
+        "Nguyễn Hữu Cảnh",
+        "Nguyễn Hữu Cầu",
+        "Nguyễn Huy Tự",
+        "Nguyễn Khắc Nhu",
+        "Nguyễn Phi Khanh",
+        "Nguyễn Thái Bình",
+        "Bà Huyện Thanh Quan",
+        "Bàn Cờ",
+        "Cao Thắng",
+        "Điện Biên Phủ",
+        "Đoàn Công Bửu",
+        "Hồ Xuân Hương",
+        "Huỳnh Tịnh Của",
+        "Kỳ Đồng",
+        "Lê Ngô Cát",
+        "Lê Quý Đôn",
+        "Nguyễn Văn Trỗi",
+        "Lê Văn Sỹ",
+        "Lý Chính Thắng",
+        "Lý Thái Tổ",
+        "Cầm Bá Thước",
+        "Chiến Thắng",
+        "Duy Tân",
+        "Đào Duy Anh",
+        "Đào Duy Từ",
+        "Đặng Thai Mai",
+        "Đặng Văn Ngữ",
+        "Đoàn Thị Điểm",
+        "Đỗ Tấn Phong",
+        "Hải Nam",
+        "Hoàng Diệu",
+        "Hoàng Minh Giám",
+        "Hoàng Văn Thụ",
+        "Hồ Biểu Chánh",
+        "Hồ Văn Huê",
+        "Huỳnh Văn Bánh",
+        "Lam Sơn",
+        "Mai Văn Ngọc",
+        "Ngô Thời Nhiệm",
+        "Nguyễn Đình Chính",
+        "Nguyễn Kiệm",
+        "Nguyễn Thị Huỳnh",
+        "Nguyễn Trọng Tuyển",
+        "Nguyễn Trường Tộ",
+        "Nguyễn Văn Đậu",
+        "Nhiêu Tứ",
+        "Phan Đăng Lưu",
+        "Phan Đình Phùng",
+        "Phan Tây Hồ",
+        "Phan Xích Long",
+        "Phổ Quang",
+        "Thích Quảng Đức",
+        "Trần Cao Vân",
+        "Trần Huy Liệu",
+        "Trần Hữu Trang",
+        "Trần Kế Xương",
+        "Trần Khắc Chân",
+        "Trần Văn Đang",
+        "Trương Quốc Dung"
+    ]
+}

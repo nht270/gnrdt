@@ -1,0 +1,31 @@
+{
+  "name": "generate_data",
+  "version": "1.0.0",
+  "description": "Generate data to JSON or SQL, support for developer have a database quickly",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nht270/gnrdt.git"
+  },
+  "keywords": [
+    "generate",
+    "data"
+  ],
+  "author": "group6",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nht270/gnrdt/issues"
+  },
+  "homepage": "https://github.com/nht270/gnrdt#readme",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "express-handlebars": "^6.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}

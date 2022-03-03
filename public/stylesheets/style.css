@@ -1,0 +1,57 @@
+/* * {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+div#header ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+div#header ul li {
+    display: inline-block;
+}
+
+div#footer {
+    color: white;
+    background-color: black;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+} */
+
+#page-title {
+    text-align: center;
+}
+
+div.main-wrapper {
+    border: 2px solid black;
+    border-radius: 4px;
+    position: relative;
+}
+
+div.main-wrapper span.label-wrapper {
+    position: absolute;
+    left: 1em;
+    top: -1.5em;
+    background-color: white;
+    padding: 5px 10px;
+}
+
+div.main-wrapper div#database-info div{
+    display: inline-block;
+    margin: 30px 100px;
+}
+
+input[type="text"] {
+    border-radius: 5px;
+}
+
+div.main-wrapper div.sub-wrapper {
+    border-top: 2px solid black;
+    position: relative;
+}
+
+div.main-wrapper div.sub-wrapper div.pre-fields div{
+    display: inline-block;
+    margin: 30px 100px 20px;
+}
