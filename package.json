@@ -4,6 +4,7 @@
   "description": "Generate data to JSON or SQL, support for developer have a database quickly",
   "main": "app.js",
   "scripts": {
+    "start": "node app",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
