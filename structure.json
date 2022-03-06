@@ -1,0 +1,22 @@
+{
+    "databaseName": "string | required",
+    "type": "string: JSON/SQL | required",
+    "fieldsSets": [
+        {
+            "setName": "string | required",
+            "referenTo": {
+                "setName": "string | required",
+                "field": "string | required"
+            },
+            "fields": [
+                {
+                    "fieldName": "string | required",
+                    "datatype": {
+                        "type": "string | required",
+                        "options": "object: belong to type | required"
+                    }
+                }
+            ]
+        }
+    ]
+}
