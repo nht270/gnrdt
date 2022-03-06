@@ -259,17 +259,23 @@ let generateSqlCode = (schema, countRow) => {
 
 // tao code sql insert gia tri tu schema va countRow
 let generateSqlFiledsCode = (schema, countRow) => {
-    let sqlInsertFiledsCode = `INSERT INTO '${schema.tableName}'
-    (${schema.fields.map(field => field.name).join(', ')}) VALUES\n`
+    let sqlInsertFiledsCode =
+        `INSERT INTO \`${schema.tableName}\`(\`${schema.fields.map(field => field.name).join('`, `')}\`) VALUES\n`
     let rows = []
 
+    // ĐANG LÀM
     // gia tri unique/auto increment tao truoc
     const preValues = {}
 
     for (let i = 1; i <= countRow; i++) {
         let valuesInField = []
         for (field of schema.fields) {
-            valuesInField.push(randomWithTemplate(field.datatype))
+            let valueInField = randomWithTemplate(field.datatype)
+            valuesInField.push(
+                field.datatype.type == 'number'
+                    ? valueInField
+                    : `'${valueInField}'`
+            )
         }
         rows.push(`(${valuesInField.join(', ')})`)
     }
@@ -280,9 +286,13 @@ let generateSqlFiledsCode = (schema, countRow) => {
 // tao code tao bang tu schema
 let createSqlTableCode = (schema) => {
     let sqlTableCode =
-        `CREATE TABLE IF NOT EXISTS '${schema.tableName}' (`
+        `CREATE TABLE IF NOT EXISTS \`${schema.tableName}\` (`
+
+    // tab indent
+    let tab = '  '
+
     for (field of schema.fields) {
-        sqlTableCode += `\n\t${field.name}`
+        sqlTableCode += `\n${tab}\`${field.name}\``
         switch (field.datatype.type) {
             case 'number':
                 sqlTableCode += ` ${field.datatype.isInt ? 'int' : 'float'}, `

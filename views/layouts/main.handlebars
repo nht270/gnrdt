@@ -129,14 +129,16 @@
                 tables.push(table)
             }
             let schema = { databaseName, tables }
-            fetch('https://gnrdt.herokuapp.com/generate',
+            // api url for generate
+            let API_URL = `http://localhost:8080/generate`
+            fetch(API_URL,
                 {
                     method: 'post',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ schema })
                 }).then(rs => rs.text())
                 .then(rs => {
-                    document.querySelector('#req-content').innerHTML = rs
+                    document.querySelector('#req-content').innerHTML = `<pre>${rs}</pre>`
                 })
         })
 
