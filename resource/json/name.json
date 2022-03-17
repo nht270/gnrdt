@@ -316,7 +316,7 @@
         "Xung",
         "Yên"
     ],
-    "middleNamesForWomen": [
+    "womenMiddleNames": [
         "Hoài",
         "Thuỳ",
         "Tú",
@@ -507,7 +507,7 @@
         "Mẫn",
         "Như"
     ],
-    "firstNamesForWomen": [
+    "womenFirstNames": [
         "Vy",
         "Tường",
         "Hân",
@@ -629,7 +629,7 @@
         "Hằng",
         "Phương"
     ],
-    "middleNamesForMen": [
+    "menMiddleNames": [
         "Tuấn",
         "Đức",
         "Duy",
@@ -855,7 +855,6 @@
         "Trọng",
         "Thành",
         "Mạnh",
-        "",
         "Xuân",
         "Quốc",
         "Chí",
@@ -931,7 +930,6 @@
         "Xuân",
         "Đức",
         "Duy",
-        "",
         "Thanh",
         "Thế",
         "Hữu",
@@ -981,7 +979,6 @@
         "Mạnh",
         "Tấn",
         "Hưng",
-        "",
         "Xuân",
         "Quốc",
         "Khánh",
@@ -1043,7 +1040,6 @@
         "Công",
         "Mạnh",
         "Tấn",
-        "",
         "Xuân",
         "Quốc",
         "Phi",
@@ -1164,7 +1160,7 @@
         "Quốc",
         "Nguyên"
     ],
-    "firstNamesForMen": [
+    "menFirstNames": [
         "An",
         "Ân",
         "Anh",
