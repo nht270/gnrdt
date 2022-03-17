@@ -3,6 +3,7 @@ let router = express.Router()
 let home = require('../controllers/home')
 
 router.get('/', home.index)
+router.get('/home', home.index)
 
 // generate data
 

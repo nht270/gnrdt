@@ -1,8 +1,7 @@
 let express = require('express')
 let router = express.Router()
+let contact = require('../controllers/contact')
 
-let admin = require('../controllers/admin')
-
-router.get('/', admin.index)
+router.get('/', contact.index)
 
 module.exports = router

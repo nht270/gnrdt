@@ -1,6 +1,4 @@
-let {
-    generateRawData,
-} = require('./preGenerate')
+let { generateRawData } = require('./preGenerate')
 
 const { DEFAULT_STRING_LENGTH } = require('./random')
 

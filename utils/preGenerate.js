@@ -192,24 +192,6 @@ let preGenerateData = (fieldsSet, skipFields) => {
     return preDatas
 }
 
-// // generate array number unique
-// // (only integer because float have very very many values to not match)
-// let generateNumbers = (min, max, amount, unique = false) => {
-
-//     // limited amount because over number of unique cases
-//     if (amount > countCasesUniqueOfNumberType(min, max))
-//         amount = countCasesUniqueOfNumberType(min, max)
-//     const resultArray = []
-//     let resultRandom
-//     for (let i = 1; i <= amount; i++) {
-//         do {
-//             resultRandom = randomIntegerNumber(min, max)
-//         } while (resultArray.some(v => v == resultRandom) && unique)
-//         resultArray.push(resultRandom)
-//     }
-//     return resultArray
-// }
-
 // generate array numbers auto increment
 let generateNumbersAutoIncrement = (start, amount, step = 1) => {
     const resultArray = []
@@ -330,40 +312,6 @@ let generateDatasWithTemplateAutoIncrement =
         }
     }
 
-// // generate array strings unique
-// let generateStrings = (
-//     size = DEFAULT_STRING_LENGTH,
-//     haveLower = true,
-//     haveUpper = true,
-//     haveNumberic = true,
-//     amount,
-//     unique = false
-// ) => {
-
-//     let patternString = ''
-
-//     if (haveLower) patternString += LOWER_CHARACTER
-//     if (haveUpper) patternString += UPPER_CHARACTER
-//     if (haveNumberic) patternString += NUMERIC
-//     if (patternString == '' || amount == 0 || size <= 0) return []
-
-//     let numberOfUniqueCases =
-//         countCasesUniqueOfStringType(size, haveLower, haveUpper, haveNumberic)
-
-//     // limited amount because over number of unique cases
-//     if (amount > numberOfUniqueCases)
-//         amount = numberOfUniqueCases
-
-//     const resultArray = []
-//     let resultRandom
-//     for (let i = 1; i <= amount; i++) {
-//         do {
-//             resultRandom = randomString(size, haveLower, haveUpper, haveNumberic)
-//         } while (resultArray.some(v => v == resultRandom) && unique)
-//         resultArray.push(resultRandom)
-//     }
-//     return resultArray
-// }
 
 // generate datas with a input template
 let generateArrayWithTemplate = (template, amount, unique = false) => {
@@ -559,22 +507,4 @@ let compareImportantLevelOfRefs = (stRef, ndRef, stFieldsSet, ndFieldsSet) => {
     }
 }
 
-module.exports = {
-    generateRawData,
-    preGenerateData,
-    // generateNumbers,
-    generateNumbersAutoIncrement,
-    generateStringsAutoIncrement,
-    generateDatesAutoIncrement,
-    // generateStrings,
-    generateArrayWithTemplate,
-    addUnitForString,
-    convertDecNumberToString,
-    convertStringToDecNumber,
-    mappingStringToArrayNumber,
-    convertDecNumberArrayToMappingArray,
-    reorganizeReferenceFields,
-    lengthReferencesOfField,
-    compareImportantLevelOfRefs,
-    generateDatasWithTemplateAutoIncrement
-}
+module.exports = { generateRawData }
