@@ -27,7 +27,7 @@
 </nav>
 <!-- body -->
 <div class="container">
-    <h1 id="page-title">Generate Data</h1>
+    <h1 id="page-title" style="margin: 30px;">Generate Data</h1>
     <div class="main-wrapper">
         <span class="label-wrapper">
             <h3>Database</h3>
@@ -56,63 +56,55 @@
                     Add fiels: <input type="text" name="addFields" value="1">
                     <button type="button" onclick="addfields(this)" class="btn btn-primary">Add</button>
                 </div>
+                Row amount: <input type="text" name="rowAmount" style="width: 50px" value="1">
             </div>
             <div class="tbl-doc-info" style="margin: 0 100px;">
                 <div class="row">
-                    <div class="col-4">
-                        <div class="row">
-                            <div class="col-6">Field name</div>
-                            <div class="col-6">Data type</div>
-                        </div>
-                    </div>
-                    <div class="col-8">Option</div>
+                    <div class="col-2">Field name</div>
+                    <div class="col-2">Data type</div>
+                    <div class="col-4">Constraint</div>
+                    <div class="col-4">Options</div>
                 </div>
                 <div class="row" style="margin-top: 10px;">
-                    <div class="col-4">
-                        <div class="row">
-                            <div class="col-6">
-                                <input type="text" name="fieldName" placeholder="Field name" style="width: 100px;">
-                            </div>
-                            <div class="col-6">
-                                <select name="dataType">
-                                    <option value="string">String</option>
-                                    <option value="number">Number</option>
-                                    <option value="name">Name</option>
-                                </select>
-                            </div>
-                        </div>
+
+                    <div class="col-2">
+                        <input type="text" name="fieldName" placeholder="Field name" style="width: 150px;">
                     </div>
-                    <div class="col-8">
-                        <input type="text" name="length" placeholder="Length">
-                        <input type="checkbox" name="haveLowerCharater" checked> Have lower charater
-                        <input type="checkbox" name="haveUpperCharater"> Have upper charater
-                        <input type="checkbox" name="haveNumeric"> Have numeric
+                    <div class="col-2">
+                        <select name="dataType" onchange="changeOptionForSelect(this)">
+                            <option value="number">Number</option>
+                            <option value="string">String</option>
+                            <option value="date">Date</option>
+                            <option value="name">Name</option>
+                            <option value="address">Address</option>
+                            <option value="set">Set</option>
+                            <option value="freedom">Freedom</option>
+                            <option value="template">Template</option>
+                        </select>
                     </div>
-                </div>
-                <div class="row" style="margin-top: 10px;">
-                    <div class="col-4">
-                        <div class="row">
-                            <div class="col-6">
-                                <input type="text" name="fieldName" placeholder="Field name" style="width: 100px;">
-                            </div>
-                            <div class="col-6">
-                                <select name="dataType">
-                                    <option value="string">String</option>
-                                    <option value="number" selected>Number</option>
-                                    <option value="name">Name</option>
-                                </select>
-                            </div>
-                        </div>
+                    <div class="col-4 crollable-x">
+                        <input type="checkbox" class="space-x" name="primaryKey" value="primaryKey"> Primary key
+                        <input type="checkbox" class="space-x" name="autoIncrement" value="autoIncrement"
+                            onclick="onTurnAutoIncrement(this)"> Auto increment
+                        <input type="checkbox" class="space-x" name="unique" value="unique"> Unique
                     </div>
-                    <div class="col-8">
-                        <input type="radio" name="numberType" value="int"> Is integer
-                        <input type="radio" name="numberType" value="float"> Is float
+                    <div class="col-4 crollable-x">
+                        <input type="text" class="space-x" name="min" style="width: 70px;" placeholder="Min">
+                        <input type="text" class="space-x" name="max" style="width: 70px;" placeholder="Max">
+                        <input type="checkbox" class="space-x" name="isInt"> Is integer
                     </div>
                 </div>
             </div>
+            <div class="tbl-doc-references" style="margin: 10px 100px;"></div>
+            <button class="btn btn-primary" onclick="addReference(this)" style="margin: 10px 100px">
+                Add new reference
+            </button>
         </div>
-        <button class="btn btn-primary" style="margin: 10px 100px">Add new table/collection</button>
+        <button class="btn btn-primary" onclick="addFieldsSet(this)" style="margin: 10px 100px">Add new
+            table/collection</button>
     </div>
     <div id="req-content">
     </div>
 </div>
+
+<script src="/javascript/main.js"></script>

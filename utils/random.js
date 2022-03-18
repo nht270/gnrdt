@@ -11,8 +11,8 @@ const ADDRESS_JSON_PATH = '../resource/json/address.json'
 
 // random float number
 let randomFloatNumber = (min, max) => {
-    min = min == undefined ? DEFAULT_MIN_NUMBER : min
-    max = max == undefined ? DEFAULT_MAX_NUMBER : max
+    min = min == undefined ? DEFAULT_MIN_NUMBER : min * 1
+    max = max == undefined ? DEFAULT_MAX_NUMBER : max * 1
     return Math.random() * (max + 1 - min) + min
 }
 

@@ -32,7 +32,7 @@ let generateRawData = (schema) => {
     if (!isCorrectSchema(schema))
         return []
     // pre generate data by scheme
-
+    console.log('passed')
     let reorganizedReferenceFields = reorganizeReferenceFields(schema)
     let skipFields = reorganizedReferenceFields
         .filter(reference => reference.point == 0)
@@ -49,6 +49,8 @@ let generateRawData = (schema) => {
             .map(skip => skip.field)
         return preGenerateData(fieldsSet, currentSkipFields)
     })
+
+    console.log({ dataFieldsSets, schema })
 
     for (reference of reorganizedReferenceFields) {
 
@@ -162,6 +164,8 @@ let preGenerateData = (fieldsSet, skipFields) => {
         }
     })
 
+    console.log('rowAmount', fieldsSet.rowAmount)
+
     for (let i = 0; i < fieldsSet.rowAmount; i++) {
         let valuesInField = []
         for (field of fieldsSet.fields) {
@@ -189,13 +193,19 @@ let preGenerateData = (fieldsSet, skipFields) => {
         preDatas.push(valuesInField)
     }
 
+    console.log(preDatas)
+
     return preDatas
 }
 
 // generate array numbers auto increment
 let generateNumbersAutoIncrement = (start, amount, step = 1) => {
     const resultArray = []
+    start = start * 1
+    amount = amount * 1
+    step = step * 1
     for (let i = start; i < start + amount * step; i += step) {
+        console.log({ i, start, amount, step })
         resultArray.push(i)
     }
     return resultArray
@@ -339,7 +349,7 @@ let addUnitForString = (inputString, patternString, amount) => {
     // convert string to decimal number
     let decNumber = convertStringToDecNumber(inputString, patternString)
 
-    decNumber += amount
+    decNumber += amount * 1
 
     // convert decimal number to string
     // and padding start with lowest value of pattern string
