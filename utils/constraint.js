@@ -87,19 +87,16 @@ let isCorrectReference = (reference, schema) => {
             reference.referenceTo.toSetName, schema
         )
 
-        console.log({ field: reference.fromField, passed: '1' })
         if (isAutoIncrement(reference.fromField, currentFieldsSet) &&
             !possibleAutoIncrement(currentField)) {
             return false
         }
 
-        console.log({ field: reference.fromField, passed: '1' })
         if (isUnique(reference.fromField, currentFieldsSet) &&
             !possibleUnique(currentField, currentFieldsSet.rowAmount)) {
             return false
         }
 
-        console.log({ field: reference.fromField, passed: '2' })
         // if One2One relation both have been equal
         if (currentRelation == 'One2One') {
             return currentFieldsSet.rowAmount == referencedFieldsSet.rowAmount

@@ -12,7 +12,6 @@ let generateSqlCode = (schema, dropDatabase, dropTable, breakPoint) => {
     let sqlUseDatabase = codeUseDatabase(schema)
     let sqlTables = ''
     let rawData = generateRawData(schema)
-    console.log({ rawData })
     if (rawData.length) {
         sqlTables = rawData
             .map(block => {

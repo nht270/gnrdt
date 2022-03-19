@@ -4,12 +4,12 @@
         <button class="btn space-x" onclick="window.location.href='/logout'">Logout</button>
     </div>
 </div>
-<div class="container w-75">
+<div class="container w-75" style="min-height: 77vh;">
     <div class="row">
         <div class="container">
             <h2>List shared generated data</h2>
             <div id="accordion">
-                {{#each test}}
+                {{#each remapGeneratedFiles}}
                 <div class="card">
                     <div class="card-header">
                         <a class="" data-bs-toggle="collapse" href="#collapse{{this.id}}">

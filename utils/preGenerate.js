@@ -32,7 +32,6 @@ let generateRawData = (schema) => {
     if (!isCorrectSchema(schema))
         return []
     // pre generate data by scheme
-    console.log('passed')
     let reorganizedReferenceFields = reorganizeReferenceFields(schema)
     let skipFields = reorganizedReferenceFields
         .filter(reference => reference.point == 0)
@@ -49,8 +48,6 @@ let generateRawData = (schema) => {
             .map(skip => skip.field)
         return preGenerateData(fieldsSet, currentSkipFields)
     })
-
-    console.log({ dataFieldsSets, schema })
 
     for (reference of reorganizedReferenceFields) {
 
@@ -164,8 +161,6 @@ let preGenerateData = (fieldsSet, skipFields) => {
         }
     })
 
-    console.log('rowAmount', fieldsSet.rowAmount)
-
     for (let i = 0; i < fieldsSet.rowAmount; i++) {
         let valuesInField = []
         for (field of fieldsSet.fields) {
@@ -193,8 +188,6 @@ let preGenerateData = (fieldsSet, skipFields) => {
         preDatas.push(valuesInField)
     }
 
-    console.log(preDatas)
-
     return preDatas
 }
 
@@ -205,7 +198,6 @@ let generateNumbersAutoIncrement = (start, amount, step = 1) => {
     amount = amount * 1
     step = step * 1
     for (let i = start; i < start + amount * step; i += step) {
-        console.log({ i, start, amount, step })
         resultArray.push(i)
     }
     return resultArray
@@ -217,7 +209,6 @@ let generateStringsAutoIncrement = (
     { size, haveLower, haveUpper, haveNumeric }
 ) => {
 
-    console.log({ haveNumeric })
     size = (size <= 0 || size == undefined)
         ? DEFAULT_STRING_LENGTH : size
     haveLower = haveLower == undefined ? true : haveLower
@@ -232,7 +223,6 @@ let generateStringsAutoIncrement = (
     if (haveLower) patternString += LOWER_CHARACTER
     if (haveUpper) patternString += UPPER_CHARACTER
     if (haveNumeric) patternString += NUMERIC
-    console.log({ patternString, haveNumeric })
     for (let i = 0; i < amount - 1; i++) {
         hookPoint = addUnitForString(hookPoint, patternString, step)
         resultArray.push(hookPoint)

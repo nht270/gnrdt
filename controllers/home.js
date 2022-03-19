@@ -25,9 +25,6 @@ let generate = {
                     let fd = fs.openSync(
                         path.join(__dirname, '..', 'resource', 'generated', fileName)
                         , 'w')
-                    console.log(__dirname, fd)
-                    console.log(path.join(__dirname, '..', 'resource', 'generated', fileName))
-                    console.log('Passed write file')
                     numberOfWritedByte = fs.writeSync(fd, buffer)
                 } catch (e) {
                     console.log('Error write file!\nCause: ', e)
@@ -35,8 +32,7 @@ let generate = {
                 }
                 if (numberOfWritedByte > 0) {
                     let generatedFile = new GeneratedFile({ fileName, createAt: new Date(Date.now()) })
-                    let rs = await generatedFile.save()
-                    console.log(rs)
+                    await generatedFile.save()
                     let hostname = process.env.HOSTNAME || 'http://localhost:8080/'
                     res.json({
                         success: true,
