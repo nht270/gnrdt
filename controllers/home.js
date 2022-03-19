@@ -20,15 +20,20 @@ let generate = {
                 let sql = generateSqlCode(schema)
                 let fileName = randomFileName(8, 'sql')
                 let buffer = Buffer.from(sql)
-                let fd = fs.openSync(
-                    path.join('resource', 'generated', fileName)
-                    , 'w')
-                let numberOfWritedByte = fs.writeSync(fd, buffer)
-                fs.close(fd)
-                console.log('Passed write file')
+                let numberOfWritedByte = 0
+                try {
+                    let fd = fs.openSync(
+                        path.join('resource', 'generated', fileName)
+                        , 'w')
+                    numberOfWritedByte = fs.writeSync(fd, buffer)
+                    fs.close(fd)
+                    console.log('Passed write file')
+                } catch (e) {
+                    console.log('Error write file!\nCause: ', e)
+                } finally {
+                    fs.close()
+                }
                 if (numberOfWritedByte > 0) {
-
-
                     let generatedFile = new GeneratedFile({ fileName, createAt: new Date(Date.now()) })
                     let rs = await generatedFile.save()
                     console.log(rs)
