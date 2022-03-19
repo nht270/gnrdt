@@ -1,0 +1,13 @@
+
+CREATE DATABASE IF NOT EXISTS `1`;
+
+USE `1`;
+
+CREATE TABLE IF NOT EXISTS `1` (
+  `1` float,
+  PRIMARY KEY (``)
+);
+
+INSERT INTO `1`(`1`) VALUES
+(0);
+

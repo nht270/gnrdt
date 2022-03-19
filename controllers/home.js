@@ -23,15 +23,15 @@ let generate = {
                 let numberOfWritedByte = 0
                 try {
                     let fd = fs.openSync(
-                        path.join('resource', 'generated', fileName)
+                        path.join(__dirname, '..', 'resource', 'generated', fileName)
                         , 'w')
+                    console.log(__dirname, fd)
+                    console.log(path.join(__dirname, '..', 'resource', 'generated', fileName))
                     console.log('Passed write file')
                     numberOfWritedByte = fs.writeSync(fd, buffer)
-                    fs.close(fd)
                 } catch (e) {
                     console.log('Error write file!\nCause: ', e)
                 } finally {
-                    fs.close()
                 }
                 if (numberOfWritedByte > 0) {
                     let generatedFile = new GeneratedFile({ fileName, createAt: new Date(Date.now()) })
