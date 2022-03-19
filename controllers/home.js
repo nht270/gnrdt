@@ -25,6 +25,7 @@ let generate = {
                     , 'w')
                 let numberOfWritedByte = fs.writeSync(fd, buffer)
                 fs.close(fd)
+                console.log('Passed write file')
                 if (numberOfWritedByte > 0) {
 
 
