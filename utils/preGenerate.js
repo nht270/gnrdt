@@ -214,13 +214,15 @@ let generateNumbersAutoIncrement = (start, amount, step = 1) => {
 // generate array numbers auto increment
 let generateStringsAutoIncrement = (
     start, amount, step = 1,
-    { size, haveLower, haveUpper, haveNumberic }
+    { size, haveLower, haveUpper, haveNumeric }
 ) => {
+
+    console.log({ haveNumeric })
     size = (size <= 0 || size == undefined)
         ? DEFAULT_STRING_LENGTH : size
     haveLower = haveLower == undefined ? true : haveLower
     haveUpper = haveUpper == undefined ? true : haveUpper
-    haveNumberic = haveNumberic == undefined ? true : haveNumberic
+    haveNumeric = haveNumeric == undefined ? true : haveNumeric
 
     const resultArray = [start]
     let hookPoint = start
@@ -229,7 +231,8 @@ let generateStringsAutoIncrement = (
 
     if (haveLower) patternString += LOWER_CHARACTER
     if (haveUpper) patternString += UPPER_CHARACTER
-    if (haveNumberic) patternString += NUMERIC
+    if (haveNumeric) patternString += NUMERIC
+    console.log({ patternString, haveNumeric })
     for (let i = 0; i < amount - 1; i++) {
         hookPoint = addUnitForString(hookPoint, patternString, step)
         resultArray.push(hookPoint)
@@ -311,12 +314,13 @@ let generateDatasWithTemplateAutoIncrement =
                 case 'address':
                 case 'freedom':
                 default:
+                    incrementArray = []
                     break
             }
 
             let resultArray = incrementArray
                 .map((incrementValue, index) =>
-                    firstArray[index] + incrementValue + lastArray[index]
+                    firstArray[index] + (incrementValue || '') + lastArray[index]
                 )
             return resultArray
         }

@@ -165,8 +165,6 @@ generateBtn.addEventListener('click', () => {
     })
 
     let schema = { databaseName, type: databaseType, fieldsSets }
-    console.log(schema)
-
     // api url for generate
     let API_URL = `generate`
     fetch(API_URL,
@@ -174,9 +172,24 @@ generateBtn.addEventListener('click', () => {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ schema })
-        }).then(rs => rs.text())
+        }).then(rs => rs.json())
         .then(rs => {
-            document.querySelector('#req-content').innerHTML = `<pre>${rs}</pre>`
+            if (rs.success) {
+                document.querySelector('#req-content').innerHTML = `
+                    <div class="alert success">
+                        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                        <strong>Success!</strong> Your data have 
+                        <button class="btn" onclick="window.location.href='${rs.link}'"><i class="fa fa-download"></i> Download</button>
+                    </div>
+                    `
+            } else {
+                document.querySelector('#req-content').innerHTML = `
+                    <div class="alert">
+                        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                        <strong>Warning!</strong> ${rs.cause}
+                    </div>
+                `
+            }
         })
 })
 

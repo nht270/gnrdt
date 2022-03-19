@@ -13,14 +13,14 @@ const ADDRESS_JSON_PATH = '../resource/json/address.json'
 let randomFloatNumber = (min, max) => {
     min = min == undefined ? DEFAULT_MIN_NUMBER : min * 1
     max = max == undefined ? DEFAULT_MAX_NUMBER : max * 1
-    return Math.random() * (max + 1 - min) + min
+    return Math.random() * (max - min) + min
 }
 
 // random integer number
 let randomIntegerNumber = (min, max) => {
     min = min == undefined ? DEFAULT_MIN_NUMBER : min
     max = max == undefined ? DEFAULT_MAX_NUMBER : max
-    return Math.floor(randomFloatNumber(min, max))
+    return Math.round(randomFloatNumber(min, max))
 }
 
 // random number (general type)
@@ -265,11 +265,20 @@ let randomWithTemplate = (template) => {
     return randomResult
 }
 
+
+// random for file name
+let randomFileName = (length, extension) => {
+    return `${Date.now()}${randomString(length)}.${extension}`
+}
+
 module.exports = {
     randomWithTemplate,
     randomInASet,
+    randomFileName,
     DEFAULT_STRING_LENGTH,
     LOWER_CHARACTER,
     UPPER_CHARACTER,
-    NUMERIC
+    NUMERIC,
+    NAME_JSON_PATH,
+    ADDRESS_JSON_PATH
 }

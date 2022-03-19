@@ -6,6 +6,7 @@ let {
     getSymmetryReference,
 } = require('./common')
 
+let { NAME_JSON_PATH, ADDRESS_JSON_PATH } = require('./random')
 // for database
 const DATABASE_TYPE = ['SQL', 'JSON']
 
@@ -66,9 +67,8 @@ let isCorrectReference = (reference, schema) => {
 
     // check have symmetry reference
     let symmetryReference = getSymmetryReference(reference, schema)
-    if (reference, schema.length == 0)
+    if (symmetryReference, symmetryReference.length == 0)
         return false
-
     // get first symmetry reference
     symmetryReference = symmetryReference[0]
 
@@ -87,16 +87,19 @@ let isCorrectReference = (reference, schema) => {
             reference.referenceTo.toSetName, schema
         )
 
-        if (!isAutoIncrement(reference.fromField, currentFieldsSet) &&
+        console.log({ field: reference.fromField, passed: '1' })
+        if (isAutoIncrement(reference.fromField, currentFieldsSet) &&
             !possibleAutoIncrement(currentField)) {
             return false
         }
 
-        if (!isUnique(reference.fromField, currentFieldsSet) &&
+        console.log({ field: reference.fromField, passed: '1' })
+        if (isUnique(reference.fromField, currentFieldsSet) &&
             !possibleUnique(currentField, currentFieldsSet.rowAmount)) {
             return false
         }
 
+        console.log({ field: reference.fromField, passed: '2' })
         // if One2One relation both have been equal
         if (currentRelation == 'One2One') {
             return currentFieldsSet.rowAmount == referencedFieldsSet.rowAmount
@@ -212,7 +215,7 @@ let countCasesUniqueOfNameType = (isMale) => {
         menFirstNames,
         womenMiddleNames,
         womenFirstNames
-    } = require('./name.json')
+    } = require(NAME_JSON_PATH)
 
     if (isMale == true) {
         return lastNames.length *
@@ -234,7 +237,7 @@ let countCasesUniqueOfNameType = (isMale) => {
 
 // count cases unique of address type
 let countCasesUniqueOfAddressType = () => {
-    let { streets, provinces } = require('./address.json')
+    let { streets, provinces } = require(ADDRESS_JSON_PATH)
     let lengthOfProvicesAndDistricts = provinces.reduce(
         (total, province) => {
             return total + province.districts.length
