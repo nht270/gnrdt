@@ -42,7 +42,7 @@ app.use('/', require('./routes'))
 
 // listen
 app.listen(PORT, async () => {
-    await mongoose.connect(connectUri)
+    console.log(await mongoose.connect(connectUri))
     console.log(`App running at port ${PORT}`)
 })
 
