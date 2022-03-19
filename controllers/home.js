@@ -40,7 +40,8 @@ let generate = {
                             + fileName
                     })
                 }
-            } catch {
+            } catch (e) {
+                console.log('error: ', e)
                 res.json({ success: false, cause: `Server erorr! :(` })
             }
         } else {
