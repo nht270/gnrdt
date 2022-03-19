@@ -25,9 +25,9 @@ let generate = {
                     let fd = fs.openSync(
                         path.join('resource', 'generated', fileName)
                         , 'w')
+                    console.log('Passed write file')
                     numberOfWritedByte = fs.writeSync(fd, buffer)
                     fs.close(fd)
-                    console.log('Passed write file')
                 } catch (e) {
                     console.log('Error write file!\nCause: ', e)
                 } finally {
