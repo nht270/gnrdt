@@ -1,4 +1,9 @@
-let { generateRawData } = require('./preGenerate')
+const { getSymmetryReference } = require('./common')
+let {
+    generateRawData,
+    compareImportantLevelOfRefs,
+    IMPORTANT_LEVEL_REFERENCE
+} = require('./preGenerate')
 
 const { DEFAULT_STRING_LENGTH } = require('./random')
 
@@ -15,9 +20,27 @@ let generateSqlCode = (schema, dropDatabase, dropTable, breakPoint) => {
     if (rawData.length) {
         sqlTables = rawData
             .map(block => {
-                let table = block.fieldsSet
-                let dataRows = block.generatedData
-                return codeSqlTable(table, dataRows, dropTable, breakPoint)
+
+                let {
+                    fieldsSet: table,
+                    generatedData: dataRows
+                } = block
+                let { references } = table
+                let constraints = references.filter(reference => {
+                    let symmetryReference =
+                        getSymmetryReference(reference, schema)[0]
+                    let levelImportant =
+                        compareImportantLevelOfRefs(reference, symmetryReference)
+                    if (levelImportant == IMPORTANT_LEVEL_REFERENCE.LOWER)
+                        return true
+                })
+                return codeSqlTable(
+                    table,
+                    constraints,
+                    dataRows,
+                    dropTable,
+                    breakPoint
+                )
             }).join('\n')
     }
     let sqlCode =
@@ -34,28 +57,53 @@ let codeCreateDatabase = (schema, dropDatabase) =>
 let codeUseDatabase = (schema) =>
     `USE \`${schema.databaseName}\`;\n`
 
-let codeSqlTable = (table, dataRows, dropTable, breakPoint) =>
-    codeCreateTable(table, dropTable) +
+let codeSqlTable = (table, constraints, dataRows, dropTable, breakPoint) =>
+    codeCreateTable(table, constraints, dropTable) +
     codeInsertTable(table, dataRows, breakPoint)
 
 // code for part create table (SQL)
-let codeCreateTable = (table, dropTable) => {
+let codeCreateTable = (table, constraints, dropTable) => {
 
     let sqlCreateTable =
         dropTable ? `DROP TABLE IF EXISTS \`${table.setName}\`;\n` : ``
+    let { primaryKeys, fields } = table
 
     sqlCreateTable += `CREATE TABLE IF NOT EXISTS \`${table.setName}\` (\n`
 
-    sqlCreateTable += table.fields.map(
+    sqlCreateTable += fields.map(
         field => `${TAB}\`${field.name}\` ${choiceSQLDataType(field.datatype)}`
     ).join(',\n')
 
-    if (table.primaryKeys) {
-        sqlCreateTable += `,\n${TAB}PRIMARY KEY (\`${table.primaryKeys.join('\`, \`')}\`)`
+    if (primaryKeys &&
+        primaryKeys.length) {
+        sqlCreateTable += `,\n${TAB}PRIMARY KEY (\`${primaryKeys.join('\`, \`')}\`)`
+    }
+
+    if (constraints && constraints.length) {
+        let codeConstraints = constraints.map(constraint => {
+            return codeConstraintTable(constraint)
+        }).join(`,\n${TAB}`)
+        sqlCreateTable += `,\n${TAB}${codeConstraints}`
     }
 
     sqlCreateTable += '\n);\n\n'
     return sqlCreateTable
+}
+
+let codeConstraintTable = (reference) => {
+    let {
+        fromField,
+        referenceTo: {
+            toSetName,
+            toField
+        }
+    } = reference
+    return 'CONSTRAINT `' +
+        fromField + '_' + toField +
+        '` FOREIGN KEY (`' + fromField +
+        '`) REFERENCES `' + toSetName +
+        '` (`' + toField +
+        '`) ON DELETE CASCADE ON UPDATE CASCADE'
 }
 
 // code for insert data into created table

@@ -511,4 +511,9 @@ let compareImportantLevelOfRefs = (stRef, ndRef, stFieldsSet, ndFieldsSet) => {
     }
 }
 
-module.exports = { generateRawData }
+module.exports = {
+    generateRawData,
+    addUnitForString,
+    compareImportantLevelOfRefs,
+    IMPORTANT_LEVEL_REFERENCE
+}
