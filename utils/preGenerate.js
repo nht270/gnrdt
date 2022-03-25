@@ -4,7 +4,7 @@ let {
     getAllReferencesOfField,
     getFieldsSetFromSetName,
     isAutoIncrement,
-    getSymmetryReference,
+    getSymmetryReferences,
     getIndexInString
 } = require('./common')
 
@@ -13,10 +13,18 @@ let {
     countCasesUnique,
 } = require('./constraint')
 
-let { randomWithTemplate, randomInASet } = require('./random')
+let {
+    randomWithTemplate,
+    randomInASet,
+    DEFAULT_STRING_LENGTH
+} = require('./random')
 
 // for data random
-const { LOWER_CHARACTER, UPPER_CHARACTER, NUMERIC } = require('./random')
+const {
+    LOWER_CHARACTER,
+    UPPER_CHARACTER,
+    NUMERIC
+} = require('./random')
 
 // for compare important level of reference field
 const IMPORTANT_LEVEL_REFERENCE = {
@@ -26,42 +34,50 @@ const IMPORTANT_LEVEL_REFERENCE = {
     UNRELATED: 2
 }
 
+// default values for auto increment params
+const DEFAULT_START_AT = '000'
+const DEFAULT_STEP_BY = 1
+const DEFAULT_AMOUNT = 1
+
 let generateRawData = (schema) => {
 
     // check is correct schema
     if (!isCorrectSchema(schema))
         return []
     // pre generate data by scheme
-    let reorganizedReferenceFields = reorganizeReferenceFields(schema)
+    let reorganizedReferenceFields =
+        reorganizeReferenceFields(schema)
+
+    // skip referenced fields from other fields
     let skipFields = reorganizedReferenceFields
         .filter(reference => reference.point == 0)
         .map(reference => (
             {
-                'field': reference.fromField,
-                'setName': reference.setName
+                field: reference.from,
+                setName: reference.setName
             }
         ))
 
+    // pregenerate fieldssets and skip referenced fields
     let dataFieldsSets = schema.fieldsSets.map(fieldsSet => {
         let currentSkipFields = skipFields
-            .filter(skip => skip.setName == fieldsSet.setName)
+            .filter(skip => skip.setName == fieldsSet.name)
             .map(skip => skip.field)
         return preGenerateData(fieldsSet, currentSkipFields)
     })
 
+    // generate skiped fields
     for (reference of reorganizedReferenceFields) {
 
         let toFieldsSet =
-            getFieldsSetFromSetName(reference.referenceTo.toSetName, schema)
+            getFieldsSetFromSetName(reference.to.setName, schema)
         let toFieldReference =
-            getSymmetryReference(reference, schema)[0]
+            getSymmetryReferences(reference, schema)[0]
         let currentFieldsSet =
             getFieldsSetFromSetName(reference.setName, schema)
         let importantLevel = compareImportantLevelOfRefs(
-            reference,
-            toFieldReference,
-            currentFieldsSet,
-            toFieldsSet
+            reference, toFieldReference,
+            currentFieldsSet, toFieldsSet
         )
 
         if (importantLevel == IMPORTANT_LEVEL_REFERENCE.HIGHER ||
@@ -70,36 +86,34 @@ let generateRawData = (schema) => {
             let indexOfSourceFieldsSet =
                 getIndexOfFieldsSet(reference.setName, schema)
             let indexOfDestinationFieldsSet =
-                getIndexOfFieldsSet(reference.referenceTo.toSetName, schema)
+                getIndexOfFieldsSet(reference.to.setName, schema)
 
-            if (indexOfSourceFieldsSet != -1 && indexOfDestinationFieldsSet != -1) {
+            if (indexOfSourceFieldsSet != -1 &&
+                indexOfDestinationFieldsSet != -1) {
                 let indexOfSourceField =
-                    getIndexOfField(
-                        reference.fromField,
-                        getFieldsSetFromSetName(reference.setName, schema)
-                    )
+                    getIndexOfField(reference.from, currentFieldsSet)
                 let indexOfDestinationField =
-                    getIndexOfField(reference.referenceTo.toField,
-                        getFieldsSetFromSetName(reference.referenceTo.toSetName, schema)
-                    )
+                    getIndexOfField(reference.to.field, toFieldsSet)
 
                 // get data from data pre generate
                 // at index of reference field inportant
                 let sourceArray = dataFieldsSets[indexOfSourceFieldsSet]
                     .map(dataLine => dataLine[indexOfSourceField])
 
-                let destinationLenght = dataFieldsSets[indexOfDestinationFieldsSet].length
+                let destinationLenght =
+                    dataFieldsSets[indexOfDestinationFieldsSet].length
                 let cloneAmount = destinationLenght
                 let sourceLength = sourceArray.length
                 let randomLoopStep = Math.ceil(cloneAmount / sourceLength)
                 let destinationArray = []
                 for (let i = 0; i < randomLoopStep; i++) {
-                    destinationArray.push(...randomInASet(sourceArray, cloneAmount))
-                    cloneAmount = cloneAmount - sourceLength
+                    destinationArray
+                        .push(...randomInASet(sourceArray, cloneAmount))
+                    cloneAmount -= sourceLength
                 }
                 for (let i = 0; i < destinationLenght; i++) {
-                    dataFieldsSets[indexOfDestinationFieldsSet][i][indexOfDestinationField] =
-                        destinationArray[i]
+                    dataFieldsSets[indexOfDestinationFieldsSet]
+                    [i][indexOfDestinationField] = destinationArray[i]
                 }
             }
         }
@@ -112,41 +126,34 @@ let generateRawData = (schema) => {
 
 // pre generate data and skip some fields (will generate after)
 // because it often is reference field belong to some higher
-let preGenerateData = (fieldsSet, skipFields) => {
-
-    if (!skipFields) skipFields = []
+let preGenerateData = (fieldsSet, skipFields = []) => {
 
     let preDatas = []
 
-    // get reference columns items
-    // and skip list skiped fields
-    // let references = (fieldsSet.references || [])
-    //     .filter(reference => skipFields.includes(reference.fromField))
-
     // find order of unique, auto increment fields
     // and skip list skiped fields
-    const autoIncrementFileds = [...(fieldsSet.autoIncrement || [])]
+    const autoIncrementFileds = fieldsSet.autoIncrements || []
 
     // except fields have been auto increment
-    const uniqueFields = [...(fieldsSet.unique || [])]
+    const uniqueFields = (fieldsSet.uniques || [])
         .filter(uniqueValue =>
-            !autoIncrementFileds.some(autoIncrementValue =>
-                autoIncrementValue.name == uniqueValue
+            !autoIncrementFileds.some(({ fieldName }) =>
+                fieldName == uniqueValue
             )
         )
 
     const preValues = {}
     autoIncrementFileds.forEach(autoIcrementField => {
-        let indexOfField = getIndexOfField(autoIcrementField.name, fieldsSet)
+        let { fieldName, incrementPosition, startAt, step } = autoIcrementField
+        let { rowAmount } = fieldsSet
+        let indexOfField = getIndexOfField(fieldName, fieldsSet)
 
         if (indexOfField != -1) {
-            preValues[autoIcrementField.name] =
-                generateDatasWithTemplateAutoIncrement(
-                    fieldsSet.fields[indexOfField].datatype,
-                    autoIcrementField.incrementPosition,
-                    autoIcrementField.startAt,
-                    fieldsSet.rowAmount,
-                    autoIcrementField.step
+            let datatype = fieldsSet.fields[indexOfField].datatype
+            preValues[fieldName] =
+                generateAutoIncrementDatasWithTemplate(
+                    datatype, incrementPosition,
+                    startAt, rowAmount, step
                 )
         }
     })
@@ -163,26 +170,27 @@ let preGenerateData = (fieldsSet, skipFields) => {
 
     for (let i = 0; i < fieldsSet.rowAmount; i++) {
         let valuesInField = []
+
         for (field of fieldsSet.fields) {
+            let {
+                name: currentFieldName,
+                datatype: { type }
+            } = field
             let valueInField = ''
-            if (skipFields.includes(field.name)) {
+            if (skipFields.includes(currentFieldName)) {
                 valuesInField.push(valueInField)
                 continue
             }
-            if (autoIncrementFileds.some(autoIcrementField =>
-                autoIcrementField.name == field.name)
-                || uniqueFields.some(uniqueField =>
-                    uniqueField == field.name)
-            ) {
-                valueInField = preValues[field.name][i]
+            if (autoIncrementFileds.some(({ fieldName }) =>
+                fieldName == currentFieldName) ||
+                uniqueFields.includes(currentFieldName)) {
+                valueInField = preValues[currentFieldName][i]
             } else {
                 valueInField = randomWithTemplate(field.datatype)
             }
             // add ' ' with fields have data type is string
             valuesInField.push(
-                field.datatype.type == 'number'
-                    ? valueInField
-                    : `'${valueInField}'`
+                type == 'number' ? valueInField : `'${valueInField}'`
             )
         }
         preDatas.push(valuesInField)
@@ -192,7 +200,11 @@ let preGenerateData = (fieldsSet, skipFields) => {
 }
 
 // generate array numbers auto increment
-let generateNumbersAutoIncrement = (start, amount, step = 1) => {
+let generateNumbersAutoIncrement = (
+    start = DEFAULT_START_AT,
+    amount = DEFAULT_AMOUNT,
+    step = DEFAULT_STEP_BY
+) => {
     const resultArray = []
     start = start * 1
     amount = amount * 1
@@ -205,12 +217,13 @@ let generateNumbersAutoIncrement = (start, amount, step = 1) => {
 
 // generate array numbers auto increment
 let generateStringsAutoIncrement = (
-    start, amount, step = 1,
-    { size, haveLower, haveUpper, haveNumeric }
+    start = DEFAULT_START_AT,
+    amount = DEFAULT_AMOUNT,
+    step = DEFAULT_STEP_BY,
+    options
 ) => {
-
-    size = (size <= 0 || size == undefined)
-        ? DEFAULT_STRING_LENGTH : size
+    let { length, haveLower, haveUpper, haveNumeric } = options
+    length = (length > 0) ? length : DEFAULT_STRING_LENGTH
     haveLower = haveLower == undefined ? true : haveLower
     haveUpper = haveUpper == undefined ? true : haveUpper
     haveNumeric = haveNumeric == undefined ? true : haveNumeric
@@ -231,90 +244,100 @@ let generateStringsAutoIncrement = (
 }
 
 // generate array of increment dates with step (milliseconds)
-let generateDatesAutoIncrement = (startDate, amount, step) => {
+let generateDatesAutoIncrement = (
+    startDate = DEFAULT_START_AT,
+    amount = DEFAULT_AMOUNT,
+    step = DEFAULT_STEP_BY
+) => {
     startDate = new Date(startDate)
     let resultArray = [startDate]
     for (let i = 2; i <= amount; i++) {
-        resultArray.push(new Date(startDate.getTime() + (i - 1) * step))
+        resultArray.push(
+            new Date(startDate.getTime() + (i - 1) * step))
     }
     return resultArray
 }
 
 // generate array datas with template auto increment
-let generateDatasWithTemplateAutoIncrement =
-    (template, incrementPosition, start, amount, step = 1) => {
-        if (template && typeof (template) == 'object') {
+let generateAutoIncrementDatasWithTemplate = (
+    template, incrementPosition,
+    start, amount, step = 1
+) => {
+    if (template && typeof (template) == 'object') {
 
-            // div template to 3 part
+        // div template to 3 part
 
-            // generate 2 part first and last
-            // genearte middle part is increment
-            // join parts in old order
+        // generate 2 part first and last
+        // genearte middle part is increment
+        // join parts in old order
 
-            // wrapper single data type in template
-            if (template.type && template.type != 'template') {
-                template = {
-                    'type': 'template',
-                    'options': {
-                        'template': [template]
-                    }
-                }
-            }
-
-            let templateForFirstArray = {
+        // wrapper single data type in template
+        if (template.type && template.type != 'template') {
+            template = {
                 type: 'template',
-                options: { template: [] }
+                options: { template: [template] }
             }
-
-            let templateForLastArray = {
-                type: 'template',
-                options: { template: [] }
-            }
-
-            // filter single data type not have in incremented position
-            for (let i = 0; i < template.options.template.length; i++) {
-                if (i < incrementPosition)
-                    templateForFirstArray.options.template
-                        .push(template.options.template[i])
-                else if (i > incrementPosition)
-                    templateForLastArray.options.template
-                        .push(template.options.template[i])
-            }
-
-            let firstArray = generateArrayWithTemplate(templateForFirstArray, amount)
-            let lastArray = generateArrayWithTemplate(templateForLastArray, amount)
-
-            let incrementSector = template.options.template[incrementPosition]
-            let incrementArray = []
-            switch (incrementSector.type) {
-                case 'number':
-                    incrementArray = generateNumbersAutoIncrement(start, amount, step)
-                    break
-                case 'string':
-                    let { options } = incrementSector
-                    incrementArray = generateStringsAutoIncrement(start, amount, step, options)
-                    break
-                case 'date':
-                    incrementArray = generateDatesAutoIncrement(start, amount, step)
-                    break
-                case 'set':
-                    incrementArray = incrementSector.options.set
-                    break
-                case 'name':
-                case 'address':
-                case 'freedom':
-                default:
-                    incrementArray = []
-                    break
-            }
-
-            let resultArray = incrementArray
-                .map((incrementValue, index) =>
-                    firstArray[index] + (incrementValue || '') + lastArray[index]
-                )
-            return resultArray
         }
+
+        let templateForFirstArray = {
+            type: 'template',
+            options: { template: [] }
+        }
+
+        let templateForLastArray = {
+            type: 'template',
+            options: { template: [] }
+        }
+
+        // filter single data type not have in incremented position
+        for (let i = 0; i < template.options.template.length; i++) {
+            if (i < incrementPosition)
+                templateForFirstArray.options.template
+                    .push(template.options.template[i])
+            else if (i > incrementPosition)
+                templateForLastArray.options.template
+                    .push(template.options.template[i])
+        }
+
+        let firstArray =
+            generateArrayWithTemplate(templateForFirstArray, amount)
+        let lastArray =
+            generateArrayWithTemplate(templateForLastArray, amount)
+
+        let incrementSector = template.options.template[incrementPosition]
+        let incrementArray = []
+        switch (incrementSector.type) {
+            case 'number':
+                incrementArray =
+                    generateNumbersAutoIncrement(start, amount, step)
+                break
+            case 'string':
+                let { options } = incrementSector
+                incrementArray =
+                    generateStringsAutoIncrement(start, amount, step, options)
+                break
+            case 'date':
+                incrementArray =
+                    generateDatesAutoIncrement(start, amount, step)
+                break
+            case 'set':
+                incrementArray = incrementSector.options.set
+                break
+            case 'name':
+            case 'address':
+            case 'freedom':
+            default:
+                incrementArray = []
+                break
+        }
+
+        let resultArray = incrementArray
+            .map((incrementValue, index) =>
+                firstArray[index] + (incrementValue || '') + lastArray[index]
+            )
+        return resultArray
     }
+}
 
 
 // generate datas with a input template
@@ -373,14 +396,15 @@ let convertStringToDecNumber = (inputString, patternString) => {
         mappingStringToArrayNumber(inputString, patternString)
 
     // filter value
-    arrayMapping = arrayMapping.map(v => v < 0 ? 0 : v)
+    arrayMapping = arrayMapping.map(value => value < 0 ? 0 : value)
 
     let resultConvert = 0
 
     // convert to decimal number
     for (let i = 0; i < arrayMapping.length; i++) {
-        resultConvert += arrayMapping[i]
-            * Math.pow(patternString.length, inputString.length - 1 - i)
+        resultConvert +=
+            arrayMapping[i] *
+            Math.pow(patternString.length, inputString.length - 1 - i)
     }
     return resultConvert
 }
@@ -412,10 +436,12 @@ let convertDecNumberArrayToMappingArray = (decNumber, patternString) => {
 // rerange following important level
 let reorganizeReferenceFields = (schema) => {
     let allReferences = []
+
+    // get all references and mount set name into
     for (fieldsSet of schema.fieldsSets) {
         if (fieldsSet.references) {
             allReferences.push(...(fieldsSet.references.map(reference => {
-                reference.setName = fieldsSet.setName
+                reference.setName = fieldsSet.name
                 return reference
             })))
         }
@@ -423,7 +449,7 @@ let reorganizeReferenceFields = (schema) => {
 
     lengthReferencesOfFields = allReferences.map(reference => {
         reference.point = lengthReferencesOfField(
-            reference.fromField, reference.setName, schema)
+            reference.from, reference.setName, schema)
         return reference
     })
 
@@ -432,30 +458,31 @@ let reorganizeReferenceFields = (schema) => {
 
 // compute length of reference chain of field
 let lengthReferencesOfField = (fieldName, setName, schema) => {
-    let currentFieldsSet = getFieldsSetFromSetName(setName, schema)
-    let allReferences = getAllReferencesOfField(fieldName, currentFieldsSet)
+    let currentFieldsSet =
+        getFieldsSetFromSetName(setName, schema)
+    let allReferences =
+        getAllReferencesOfField(fieldName, currentFieldsSet)
 
     if (fieldName && allReferences.length > 0) {
         let maxReferenceLength = 0
         for (reference of allReferences) {
             let toFieldsSet =
-                getFieldsSetFromSetName(reference.referenceTo.toSetName, schema)
-            let toFieldReference = getSymmetryReference(reference, schema)[0]
+                getFieldsSetFromSetName(reference.to.setName, schema)
+            let toFieldReference =
+                getSymmetryReferences(reference, schema)[0]
             let referenceLength = 0
 
             if (toFieldsSet && toFieldReference) {
                 let importantLevel = compareImportantLevelOfRefs(
-                    reference,
-                    toFieldReference,
-                    currentFieldsSet,
-                    toFieldsSet
+                    reference, toFieldReference,
+                    currentFieldsSet, toFieldsSet
                 )
+
                 if (importantLevel == IMPORTANT_LEVEL_REFERENCE.HIGHER) {
                     referenceLength = 1 +
                         lengthReferencesOfField(
-                            toFieldReference.fromField,
-                            toFieldsSet.setName,
-                            schema
+                            toFieldReference.from,
+                            toFieldsSet.name, schema
                         )
                 } else if (importantLevel == IMPORTANT_LEVEL_REFERENCE.EQUAL)
                     referenceLength = 1
@@ -476,11 +503,18 @@ let compareImportantLevelOfRefs = (stRef, ndRef, stFieldsSet, ndFieldsSet) => {
 
     if (!ndRef) return IMPORTANT_LEVEL_REFERENCE.HIGHER
 
-    if (stRef.fromField != ndRef.referenceTo.toField)
+    if (stRef.from != ndRef.to.field)
         return IMPORTANT_LEVEL_REFERENCE.UNRELATED
 
-    let stRefRelation = stRef.referenceTo.relation
-    let ndRefRelation = ndRef.referenceTo.relation
+    let {
+        from: stRefFieldName,
+        relation: stRefRelation
+    } = stRef
+
+    let {
+        from: ndRefFieldName,
+        relation: ndRefRelation
+    } = ndRef
 
     if (stRefRelation == 'One2Many' && ndRefRelation == 'Many2One') {
         return IMPORTANT_LEVEL_REFERENCE.HIGHER
@@ -488,22 +522,22 @@ let compareImportantLevelOfRefs = (stRef, ndRef, stFieldsSet, ndFieldsSet) => {
         return IMPORTANT_LEVEL_REFERENCE.LOWER
     } else if (stRefRelation == 'One2One' && ndRefRelation == 'One2One') {
         // get auto increment of both
-        let stRefHaveAutoInc = isAutoIncrement(stRef.fromField, stFieldsSet)
-        let ndRefHaveAutoInc = isAutoIncrement(ndRef.fromField, ndFieldsSet)
+        let stRefHaveAutoInc = isAutoIncrement(stRefFieldName, stFieldsSet)
+        let ndRefHaveAutoInc = isAutoIncrement(ndRefFieldName, ndFieldsSet)
 
-        if (stRefHaveAutoInc && !ndRefHaveAutoInc) {
-            return IMPORTANT_LEVEL_REFERENCE.HIGHER
-        } else if (!stRefHaveAutoInc && ndRefHaveAutoInc) {
-            return IMPORTANT_LEVEL_REFERENCE.LOWER
+        if (stRefHaveAutoInc != ndRefHaveAutoInc) {
+            return stRefHaveAutoInc
+                ? IMPORTANT_LEVEL_REFERENCE.HIGHER
+                : IMPORTANT_LEVEL_REFERENCE.LOWER
         } else {
             let stRefHavePrimaryKey =
-                stFieldsSet.primaryKeys.includes(stRef.fromField)
+                stFieldsSet.primaryKeys.includes(stRefFieldName)
             let ndRefHavePrimaryKey =
-                ndFieldsSet.primaryKeys.includes(ndRef.fromField)
-            if (stRefHavePrimaryKey && !ndRefHavePrimaryKey) {
-                return IMPORTANT_LEVEL_REFERENCE.HIGHER
-            } else if (!stRefHavePrimaryKey && ndRefHavePrimaryKey) {
-                return IMPORTANT_LEVEL_REFERENCE.LOWER
+                ndFieldsSet.primaryKeys.includes(ndRefFieldName)
+            if (stRefHavePrimaryKey != ndRefHavePrimaryKey) {
+                return stRefHavePrimaryKey
+                    ? IMPORTANT_LEVEL_REFERENCE.HIGHER
+                    : IMPORTANT_LEVEL_REFERENCE.LOWER
             } else {
                 return IMPORTANT_LEVEL_REFERENCE.EQUAL
             }

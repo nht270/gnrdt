@@ -10,73 +10,73 @@ const NAME_JSON_PATH = '../resource/json/name.json'
 const ADDRESS_JSON_PATH = '../resource/json/address.json'
 
 // random float number
-let randomFloatNumber = (min, max) => {
-    min = min == undefined ? DEFAULT_MIN_NUMBER : min * 1
-    max = max == undefined ? DEFAULT_MAX_NUMBER : max * 1
+let randomFloatNumber = (
+    min = DEFAULT_MIN_NUMBER,
+    max = DEFAULT_MAX_NUMBER
+) => {
+    // convert to number if min, max is string
+    min = min * 1
+    max = max * 1
     return Math.random() * (max - min) + min
 }
 
 // random integer number
 let randomIntegerNumber = (min, max) => {
-    min = min == undefined ? DEFAULT_MIN_NUMBER : min
-    max = max == undefined ? DEFAULT_MAX_NUMBER : max
     return Math.round(randomFloatNumber(min, max))
 }
 
 // random number (general type)
-let randomNumber = (min, max, isInt) => {
-    min = min == undefined ? DEFAULT_MIN_NUMBER : min
-    max = max == undefined ? DEFAULT_MAX_NUMBER : max
-    isInt = isInt || false
+let randomNumber = (min, max, isInt = false) => {
     return (isInt
         ? randomIntegerNumber(min, max)
         : randomFloatNumber(min, max))
 }
 
 // random chain (general type)
-let randomString = (size, haveLower, haveUpper, haveNumberic) => {
+let randomString = (
+    length = DEFAULT_STRING_LENGTH,
+    haveLower = true,
+    haveUpper = true,
+    haveNumeric = true
+) => {
 
-    size = (size <= 0 || size == undefined)
-        ? DEFAULT_STRING_LENGTH : size
-    haveLower = haveLower == undefined ? true : haveLower
-    haveUpper = haveUpper == undefined ? true : haveUpper
-    haveNumberic = haveNumberic == undefined ? true : haveNumberic
+    // if length <= 0, set it by 1
+    if (length <= 0) length = 1
 
     // charater types selected
     let patternString = ''
-
-    let randomString = ''
+    let randomResult = ''
 
     if (haveLower) patternString += LOWER_CHARACTER
     if (haveUpper) patternString += UPPER_CHARACTER
-    if (haveNumberic) patternString += NUMERIC
+    if (haveNumeric) patternString += NUMERIC
 
     if (patternString == '')
-        return patternString
+        return ''
     else {
-        for (let i = 1; i <= size; i++) {
-            randomString += patternString[
-                Math.floor(Math.random() * patternString.length)
-            ];
+        for (let i = 1; i <= length; i++) {
+            randomResult +=
+                patternString[randomNumber(0, length - 1, true)];
         }
-        return randomString
+        return randomResult
     }
 }
 
 // random number chain (include character 0 at first)
-let randomNumberString = (size, isFloat) => {
+let randomNumberString = (
+    length = DEFAULT_STRING_LENGTH,
+    isFloat = false
+) => {
 
-    size = size == undefined ? DEFAULT_STRING_LENGTH : size
-    isFloat = isFloat == undefined ? false : isFloat
-
-    let randomResult = randomString(size, false, false, true)
+    let randomResult = randomString(length, false, false, true)
 
     // if don't have floating-point number
-    if (size < 0 || (isFloat && size < 3)) return ''
+    if (length < 0 || (isFloat && length < 3)) return ''
 
     if (isFloat) {
         let positionFloatPoint = randomIntegerNumber(1, size - 2)
-        randomResult = randomResult.substr(0, positionFloatPoint) +
+        randomResult =
+            randomResult.substr(0, positionFloatPoint) +
             '.' + randomResult.substr(positionFloatPoint + 1)
     }
     return randomResult
@@ -89,13 +89,12 @@ let randomDate = (minDate, maxDate) => {
     minDate = new Date(minDate)
     maxDate = new Date(maxDate)
 
-    // get milliseconds to random to number
+    // get milliseconds to number random
     // and convert to date
-    let maxTime = maxDate.getTime()
     let minTime = minDate.getTime()
-    let randomTime = Math.floor(
-        Math.random() * (maxTime + 1 - minTime) + minTime
-    );
+    let maxTime = maxDate.getTime()
+    let randomTime =
+        Math.floor(randomNumber(minTime, maxTime, true))
     return new Date(randomTime)
 }
 
@@ -110,20 +109,23 @@ let randomOnlyDate = (minDate, maxDate) => {
 let randomWomenName = () => {
 
     let { lastNames, womenFirstNames, womenMiddleNames } =
-        require(NAME_JSON_PATH);
+        require(NAME_JSON_PATH)
 
-    let lastName = lastNames[randomIntegerNumber(0, lastNames.length - 1)]
+    let lastName =
+        lastNames[randomIntegerNumber(0, lastNames.length - 1)]
+
     let middleName = ''
-
-    // avoid last name equal first word of middle name
     do {
-        middleName = womenMiddleNames[randomIntegerNumber(0, womenMiddleNames.length - 1)]
+        middleName =
+            womenMiddleNames[randomIntegerNumber(0, womenMiddleNames.length - 1)]
 
+        // avoid last name equal first word of middle name
     } while (lastName == middleName.split(' ')[0])
 
-    let firstName = womenFirstNames[randomIntegerNumber(0, womenFirstNames.length - 1)]
+    let firstName =
+        womenFirstNames[randomIntegerNumber(0, womenFirstNames.length - 1)]
 
-    return lastName + ' ' + middleName + ' ' + firstName
+    return `${lastName} ${middleName} ${firstName}`
 }
 
 // random name for men
@@ -132,18 +134,22 @@ let randomMenName = () => {
     let { lastNames, menFirstNames, menMiddleNames }
         = require(NAME_JSON_PATH);
 
-    let lastName = lastNames[randomIntegerNumber(0, lastNames.length - 1)]
+    let lastName =
+        lastNames[randomIntegerNumber(0, lastNames.length - 1)]
 
     let middleName = ''
 
-    // avoid last name equal first word of middle name
     do {
-        middleName = menMiddleNames[randomIntegerNumber(0, menMiddleNames.length - 1)]
+        middleName =
+            menMiddleNames[randomIntegerNumber(0, menMiddleNames.length - 1)]
+
+        // avoid last name equal first word of middle name
     } while (lastName == middleName.split(' ')[0])
 
-    let firstName = menFirstNames[randomIntegerNumber(0, menFirstNames.length - 1)]
+    let firstName =
+        menFirstNames[randomIntegerNumber(0, menFirstNames.length - 1)]
 
-    return lastName + ' ' + middleName + ' ' + firstName
+    return `${lastName} ${middleName} ${firstName}`
 }
 
 // random name (general type)
@@ -162,13 +168,16 @@ let randomName = (isMale) => {
 let randomAddress = () => {
     let { streets, provinces } = require(ADDRESS_JSON_PATH)
 
-    let apartmentNumber = randomIntegerNumber(1, MAX_APARTMENT_NUMBER);
+    let apartmentNumber =
+        randomIntegerNumber(1, MAX_APARTMENT_NUMBER)
 
-    let street = streets[randomIntegerNumber(0, streets.length - 1)]
+    let street =
+        streets[randomIntegerNumber(0, streets.length - 1)]
 
-    let province = provinces[randomIntegerNumber(0, provinces.length - 1)]
+    let province =
+        provinces[randomIntegerNumber(0, provinces.length - 1)]
 
-    let provinceName = province.name;
+    let provinceName = province.name
 
     let districtName =
         province.districts[randomIntegerNumber(0, province.districts.length - 1)]
@@ -190,7 +199,7 @@ let randomInASet = (set, amount) => {
     for (let i = 1; i <= amount; i++) {
         do {
             randomIndex = randomIntegerNumber(0, set.length - 1)
-        } while (selectedIndexes.some(index => index == randomIndex))
+        } while (selectedIndexes.includes(randomIndex))
         selectedIndexes.push(randomIndex)
         subSet.push(set[randomIndex])
     }
@@ -217,45 +226,40 @@ let randomWithTemplate = (template) => {
 
     let randomResult = ''
 
-    if (template && typeof (template) == 'object') {
-        if (!Array.isArray(template)) template = [template]
+    if (template) {
+        if (!Array.isArray(template))
+            template = [template]
+
         for (simpleType of template) {
-            switch (simpleType.type) {
+            let { type, options } = simpleType
+            switch (type) {
                 case 'number':
-                    randomResult += randomNumber(
-                        simpleType.options.min,
-                        simpleType.options.max,
-                        simpleType.options.isInt
-                    )
+                    let { min, max, isInt } = options
+                    randomResult += randomNumber(min, max, isInt)
                     break
                 case 'string':
-                    randomResult += randomString(
-                        simpleType.options.size,
-                        simpleType.options.haveLower,
-                        simpleType.options.haveUpper,
-                        simpleType.options.haveNumberic
-                    )
+                    let { length, haveLower, haveUpper, haveNumeric } = options
+                    randomResult +=
+                        randomString(length, haveLower, haveUpper, haveNumeric)
                     break
                 case 'date':
-                    randomResult += randomDate(
-                        simpleType.options.minDate,
-                        simpleType.options.maxDate
-                    )
+                    let { minDate, maxDate } = options
+                    randomResult += randomDate(minDate, maxDate)
                     break
                 case 'name':
-                    randomResult += randomName(simpleType.options.isMale)
+                    randomResult += randomName(options.isMale)
                     break
                 case 'address':
                     randomResult += randomAddress()
                     break
                 case 'set':
-                    randomResult += randomOneInASet(simpleType.options.set)
+                    randomResult += randomOneInASet(options.set)
                     break
                 case 'freedom':
-                    randomResult += simpleType.options.value
+                    randomResult += options.value
                     break
                 case 'template':
-                    randomResult += randomWithTemplate(simpleType.options.template)
+                    randomResult += randomWithTemplate(options.template)
                     break
                 default:
                     break
@@ -276,6 +280,8 @@ module.exports = {
     randomInASet,
     randomFileName,
     DEFAULT_STRING_LENGTH,
+    DEFAULT_MIN_NUMBER,
+    DEFAULT_MAX_NUMBER,
     LOWER_CHARACTER,
     UPPER_CHARACTER,
     NUMERIC,

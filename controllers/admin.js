@@ -16,10 +16,16 @@ let admin = {
 
             let link = 'resource/' + fileName
 
-            let content = fs.readFileSync(filePath,
-                { encoding: 'utf8', flag: 'r' })
-
-            remapGeneratedFiles.push({ fileName, id, link, content })
+            // check exists file
+            try {
+                if (fs.existsSync(filePath)) {
+                    let content = fs.readFileSync(filePath,
+                        { encoding: 'utf8', flag: 'r' })
+                    remapGeneratedFiles.push({ fileName, id, link, content })
+                }
+            } catch (error) {
+                console.log(`File ${fieldName} not exists!`)
+            }
         })
         res.render('admin-dashboard', { remapGeneratedFiles })
     },

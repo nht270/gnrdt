@@ -1,6 +1,7 @@
 
-// get index of field in fieldsSet
-let getIndexOfField = (fieldName, { fields }) => {
+// get index of field in fields set
+let getIndexOfField = (fieldName, fieldsSet) => {
+    let { fields } = fieldsSet
     for (let i = 0; i < fields.length; i++) {
         if (fields[i].name == fieldName)
             return i
@@ -9,27 +10,32 @@ let getIndexOfField = (fieldName, { fields }) => {
 }
 
 // get index of fieldsSet in schema
-let getIndexOfFieldsSet = (setName, { fieldsSets }) => {
+let getIndexOfFieldsSet = (setName, schema) => {
+    let { fieldsSets } = schema
     for (let i = 0; i < fieldsSets.length; i++) {
-        if (fieldsSets[i].setName == setName) return i
+        if (fieldsSets[i].name == setName)
+            return i
     }
     return -1
 }
 
 // get all referencs of field
-let getAllReferencesOfField = (fieldName, { references }) => {
+let getAllReferencesOfField = (fieldName, fieldsSet) => {
+    let { references } = fieldsSet
     if (fieldName && references)
         return references.filter(reference =>
-            reference.fromField == fieldName
+            reference.from == fieldName
         )
     else
         return []
 }
 
 // get fields set by set name in schema
-let getFieldsSetFromSetName = (setName, { fieldsSets }) => {
+let getFieldsSetFromSetName = (setName, schema) => {
+    let { fieldsSets } = schema
     if (setName && fieldsSets) {
-        let indexOfFieldsSet = getIndexOfFieldsSet(setName, { fieldsSets })
+        let indexOfFieldsSet =
+            getIndexOfFieldsSet(setName, schema)
         if (indexOfFieldsSet != -1) {
             return fieldsSets[indexOfFieldsSet]
         } else {
@@ -50,52 +56,44 @@ let getFieldFromFieldName = (fieldName, setName, schema) => {
 }
 
 // check this field name is auto increment
-let isAutoIncrement = (fieldName, { autoIncrement }) => {
-    if (!Array.isArray(autoIncrement)) return false
-    return autoIncrement.some(field =>
-        field.name == fieldName
+let isAutoIncrement = (fieldName, fieldsSet) => {
+    let { autoIncrements } = fieldsSet
+    if (!Array.isArray(autoIncrements)) return false
+    return autoIncrements.some(autoIncrement =>
+        autoIncrement.fieldName == fieldName
     )
 }
 
 // check this field name is unique field
-let isUnique = (fieldName, { unique }) => {
-    if (!Array.isArray(unique)) return false
-    return unique.some(name =>
-        name == fieldName
-    )
+let isUnique = (fieldName, fieldsSet) => {
+    let { uniques } = fieldsSet
+    if (!Array.isArray(uniques)) return false
+    return uniques.includes(fieldName)
 }
 
 // get array symmerty references from a reference
-let getSymmetryReference = (fromReference, schema) => {
-    let {
-        fromField,
-        referenceTo: {
-            toSetName,
-            toField,
-            relation: fromRelation
-        }
-    } = fromReference
+let getSymmetryReferences = (fromReference, schema) => {
+    let { from, to, relation: fromRelation } =
+        fromReference
+
+    // get fields set and references
+    // of referneced field
     let toFieldsSet =
-        getFieldsSetFromSetName(toSetName, schema)
+        getFieldsSetFromSetName(to.setName, schema)
     let allReferences =
-        getAllReferencesOfField(toField, toFieldsSet)
-    let toRelation = ''
-    switch (fromRelation) {
-        case 'One2Many':
-            toRelation = 'Many2One'
-            break
-        case 'One2One':
-            toRelation = 'One2One'
-            break
-        case 'Many2One':
-            toRelation = 'One2Many'
-            break
-        default:
-            break
+        getAllReferencesOfField(to.field, toFieldsSet)
+    symmetryRelations = {
+        One2Many: 'Many2One',
+        One2One: 'One2One',
+        Many2One: 'One2Many'
     }
+
+    let toRelation = symmetryRelations[fromRelation]
+    if (!toRelation) return []
     return allReferences.filter(
-        ({ referenceTo: { relation, toField } }) =>
-            relation == toRelation && toField == fromField
+        ({ to, relation }) =>
+            relation == toRelation &&
+            to.field == from
     )
 }
 
@@ -103,9 +101,9 @@ let getSymmetryReference = (fromReference, schema) => {
 // not have return -1
 let getIndexInArray = (element, array) => {
     let indexOfElement = -1
-    array.forEach((v, i) => {
-        if (element == v)
-            indexOfElement = i
+    array.forEach((item, index) => {
+        if (element == item)
+            indexOfElement = index
     })
     return indexOfElement
 }
@@ -124,7 +122,7 @@ module.exports = {
     getFieldFromFieldName,
     isAutoIncrement,
     isUnique,
-    getSymmetryReference,
+    getSymmetryReferences,
     getIndexInArray,
     getIndexInString
 }

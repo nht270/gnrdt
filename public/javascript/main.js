@@ -50,7 +50,7 @@ let changeOptionForSelect = (select) => {
             <input type="checkbox" class="space-x" name="isInt"> Is integer
             `,
         'string': `
-            <input type="text" class="space-x" name="lenght" style="width: 70px;" placeholder="Lenght">
+            <input type="text" class="space-x" name="length" style="width: 70px;" placeholder="Lenght">
             <input type="checkbox" class="space-x" name="haveLower" checked> Have lower charater
             <input type="checkbox" class="space-x" name="haveUpper"> Have upper charater
             <input type="checkbox" class="space-x" name="haveNumeric"> Have numeric
@@ -98,14 +98,14 @@ generateBtn.addEventListener('click', () => {
     fieldsSetsWrapper.forEach((wrapper) => {
 
         // get set name
-        let setName = wrapper.querySelector('.pre-fields .tbl-doc-name input').value
+        let name = wrapper.querySelector('.pre-fields .tbl-doc-name input').value
 
         // store primary keys
         let references = []
         let primaryKeys = []
-        let unique = []
+        let uniques = []
         let fields = []
-        let autoIncrement = []
+        let autoIncrements = []
         let rowAmount = wrapper.querySelector('input[name="rowAmount"]').value || 1
 
         let allRows = wrapper.querySelectorAll('.tbl-doc-info .row')
@@ -116,17 +116,12 @@ generateBtn.addEventListener('click', () => {
         // get references
         let referenceWrapper = wrapper
             .querySelector('.tbl-doc-references')
-        let currentFieldReferences = getReferences(referenceWrapper)
-        if (currentFieldReferences)
-            references.push(...currentFieldReferences)
+        references = getReferences(referenceWrapper)
         rows.forEach((row) => {
 
             // get data of field
             let dataField = getField(row)
             fields.push(dataField)
-
-            // get references
-
 
             // get constraint wrapper div
             let constraintWrapperDiv = row
@@ -138,15 +133,15 @@ generateBtn.addEventListener('click', () => {
 
             // get unique fields
             if (isUniqueField(constraintWrapperDiv))
-                unique.push(dataField.name)
+                uniques.push(dataField.name)
 
             // get auto increment fields
             let autoIncrementData =
                 haveAutoIncrement(constraintWrapperDiv)
             if (autoIncrementData)
-                autoIncrement.push(
+                autoIncrements.push(
                     {
-                        name: dataField.name,
+                        fieldName: dataField.name,
                         ...autoIncrementData
                     }
                 )
@@ -154,11 +149,11 @@ generateBtn.addEventListener('click', () => {
         })
 
         fieldsSets.push({
-            setName,
+            name,
             references,
             primaryKeys,
-            unique,
-            autoIncrement,
+            uniques,
+            autoIncrements,
             fields,
             rowAmount
         })
@@ -252,11 +247,11 @@ let getNumberOptions = (wrapperDiv) => {
 
 // get options of string type
 let getStringOptions = (wrapperDiv) => {
-    let size = wrapperDiv.querySelector('input[name="lenght"]').value
+    let length = wrapperDiv.querySelector('input[name="length"]').value
     let haveLower = wrapperDiv.querySelector('input[name="haveLower"]').checked
     let haveUpper = wrapperDiv.querySelector('input[name="haveUpper"]').checked
     let haveNumeric = wrapperDiv.querySelector('input[name="haveNumeric"]').checked
-    return { size, haveLower, haveUpper, haveNumeric }
+    return { length, haveLower, haveUpper, haveNumeric }
 }
 
 let getDateOptions = (wrapperDiv) => {
@@ -300,7 +295,14 @@ let getReferences = (referencesWrapper) => {
         let toSetName = referenceDiv.querySelector('input[name="toSetName"]').value
         let toField = referenceDiv.querySelector('input[name="toField"]').value
         let relation = referenceDiv.querySelector('select[name="relation"]').value
-        references.push({ fromField, referenceTo: { toSetName, toField, relation } })
+        references.push({
+            from: fromField,
+            to: {
+                setName: toSetName,
+                field: toField
+            },
+            relation
+        })
     })
     return references
 }

@@ -3,13 +3,14 @@ let {
     getFieldFromFieldName,
     isAutoIncrement,
     isUnique,
-    getSymmetryReference
+    getSymmetryReferences
 } = require('./common')
 
 let {
     NAME_JSON_PATH,
     ADDRESS_JSON_PATH
 } = require('./random')
+
 // for database
 const DATABASE_TYPE = ['SQL', 'JSON']
 
@@ -17,7 +18,10 @@ const DATABASE_TYPE = ['SQL', 'JSON']
 const {
     LOWER_CHARACTER,
     UPPER_CHARACTER,
-    NUMERIC
+    NUMERIC,
+    DEFAULT_STRING_LENGTH,
+    DEFAULT_MIN_NUMBER,
+    DEFAULT_MAX_NUMBER
 } = require('./random')
 
 // check is correct schema
@@ -48,12 +52,14 @@ let isCorrectSchema = (schema) => {
 
 // check is correct fields set
 let isCorrectFieldsSet = (fieldsSet, schema) => {
+    let { name, references } = fieldsSet
     // check set name
-    if (!fieldsSet.setName)
+    if (!name)
         return false
+
     // check references
-    if (fieldsSet.references) {
-        return fieldsSet.references.every(reference =>
+    if (references) {
+        return references.every(reference =>
             isCorrectReference(reference, schema))
     }
     return true
@@ -63,31 +69,28 @@ let isCorrectFieldsSet = (fieldsSet, schema) => {
 let isCorrectReference = (reference, schema) => {
 
     // check have values in properties
-    let { fromField, referenceTo } = reference
     let {
-        toSetName,
-        toField,
+        from: currentFieldName,
+        to,
         relation: currentRelation
-    } = referenceTo
+    } = reference
 
-    if (!fromField ||
-        !referenceTo ||
-        !toSetName ||
-        !toField ||
+    if (!currentFieldName || !to ||
+        !to.setName || !to.field ||
         !currentRelation) {
         return false
     }
 
     // check have symmetry reference
-    let symmetryReference =
-        getSymmetryReference(reference, schema)
-    if (!symmetryReference ||
-        symmetryReference.length == 0) {
+    let symmetryReferences =
+        getSymmetryReferences(reference, schema)
+    if (!symmetryReferences ||
+        symmetryReferences.length == 0) {
         return false
     }
 
     // get first symmetry reference
-    symmetryReference = symmetryReference[0]
+    let symmetryReference = symmetryReferences[0]
 
     // check unique or auto increment
     // if relation is One2One or One2Many
@@ -98,27 +101,28 @@ let isCorrectReference = (reference, schema) => {
     if (currentRelation == 'One2One' ||
         currentRelation == 'One2Many') {
         let currentSetName =
-            symmetryReference.referenceTo.toSetName
+            symmetryReference.to.setName
         let currentFieldsSet =
             getFieldsSetFromSetName(currentSetName, schema)
         let currentField =
-            getFieldFromFieldName(fromField, currentSetName, schema)
+            getFieldFromFieldName(currentFieldName, currentSetName, schema)
         let referencedFieldsSet =
-            getFieldsSetFromSetName(toSetName, schema)
+            getFieldsSetFromSetName(to.setName, schema)
 
-        if (isAutoIncrement(fromField, currentFieldsSet)) {
-            let startAt = currentFieldsSet
-                .autoIncrement
-                .filter(item =>
-                    item.name == fromField
-                )[0]
+        if (isAutoIncrement(currentFieldName, currentFieldsSet)) {
+            let { startAt } =
+                currentFieldsSet
+                    .autoIncrements
+                    .filter(item =>
+                        item.fieldName == currentFieldName
+                    )[0]
             let { rowAmount } = currentFieldsSet
             if (!possibleAutoIncrement(currentField, startAt, rowAmount)) {
                 return false
             }
         }
 
-        if (isUnique(fromField, currentFieldsSet) &&
+        if (isUnique(currentFieldName, currentFieldsSet) &&
             !possibleUnique(currentField, currentFieldsSet.rowAmount)) {
             return false
         }
@@ -126,11 +130,6 @@ let isCorrectReference = (reference, schema) => {
         // if One2One relation both have been equal
         if (currentRelation == 'One2One') {
             return currentFieldsSet.rowAmount == referencedFieldsSet.rowAmount
-        }
-
-        // if One2Many relation, referenced field have been equal or more
-        if (currentRelation == 'One2Many') {
-            return currentFieldsSet.rowAmount <= referencedFieldsSet.rowAmount
         }
     }
 
@@ -141,7 +140,8 @@ let isCorrectReference = (reference, schema) => {
 let possibleUnique = (field, rowAmount) =>
     countCasesUnique(field.datatype) >= rowAmount ? true : false
 
-let possibleAutoIncrement = ({ datatype }, startAt, rowAmount) => {
+let possibleAutoIncrement = (field, startAt, rowAmount) => {
+    let { datatype } = field
     if (datatype && datatype.type && rowAmount) {
         let { type, options } = datatype
         switch (type) {
@@ -171,21 +171,32 @@ let countCasesUnique = (datatype) => {
         let { type, options } = datatype
         switch (type) {
             case 'number':
-                return countCasesUniqueOfNumberType(options.min, options.max)
+                let { min, max, isInt } = options
+                if (isInt)
+                    return countCasesUniqueOfNumberType(min, max)
+                else
+                    return Infinity
             case 'string':
-                return countCasesUniqueOfStringType(options)
+                let { length, haveLower, haveUpper, haveNumeric } = options
+                return countCasesUniqueOfStringType(
+                    length, haveLower, haveUpper, haveNumeric
+                )
             case 'date':
-                return countCasesUniqueOfDateType(options.minDate, options.maxDate)
+                let { minDate, maxDate } = options
+                return countCasesUniqueOfDateType(minDate, maxDate)
             case 'name':
-                return countCasesUniqueOfNameType(options.isMale)
+                let { isMale } = options
+                return countCasesUniqueOfNameType(isMale)
             case 'address':
                 return countCasesUniqueOfAddressType()
             case 'set':
-                return countCasesUniqueOfSetType(options.set)
+                let { set } = options
+                return countCasesUniqueOfSetType(set)
             case 'freedom':
                 return 1
             case 'template':
-                return countCasesUniqueOfTemplateType(options.template)
+                let { template } = options
+                return countCasesUniqueOfTemplateType(template)
             default:
                 return 0
         }
@@ -198,29 +209,29 @@ let countCasesUnique = (datatype) => {
 
 // count cases unique of string type
 // use Permutation with repetition
-let countCasesUniqueOfStringType = ({ size, haveLower, haveUpper, haveNumeric }) => {
-
-    size = (size <= 0 || size == undefined)
-        ? DEFAULT_STRING_LENGTH
-        : size
-    haveLower = haveLower == undefined ? true : haveLower
-    haveUpper = haveUpper == undefined ? true : haveUpper
-    haveNumeric = haveNumeric == undefined ? true : haveNumeric
-
+let countCasesUniqueOfStringType = (
+    length = DEFAULT_STRING_LENGTH,
+    haveLower = true,
+    haveUpper = true,
+    haveNumeric = true
+) => {
     let patternLength = haveLower ? LOWER_CHARACTER.length : 0
     patternLength += haveUpper ? UPPER_CHARACTER.length : 0
     patternLength += haveNumeric ? NUMERIC.length : 0
-    return Math.pow(patternLength, size)
+    return Math.pow(patternLength, length)
 }
 
 // count cases unique of number type (only integer)
-let countCasesUniqueOfNumberType = (min, max) => max - min + 1
+let countCasesUniqueOfNumberType = (
+    min = DEFAULT_MIN_NUMBER,
+    max = DEFAULT_MAX_NUMBER
+) => max - min + 1
 
 // count cases unique of datetime type
 let countCasesUniqueOfDateType = (minDate, maxDate) => {
-    minDate = new Date(minDate)
-    maxDate = new Date(maxDate)
-    return countCasesUniqueOfNumberType(minDate.getTime(), maxDate.getTime())
+    let minTime = new Date(minDate).getTime()
+    let maxTime = new Date(maxDate).getTime()
+    return countCasesUniqueOfNumberType(minTime, maxTime)
 }
 
 // count cases unique of name type

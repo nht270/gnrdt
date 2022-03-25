@@ -11,10 +11,16 @@ let sharedGeneratedData = {
             let id = file._id
             let filePath = path.join('resource', 'generated', file.fileName)
             let link = 'resource/' + fileName
-            let content = fs.readFileSync(filePath,
-                { encoding: 'utf8', flag: 'r' })
-
-            remapGeneratedFiles.push({ fileName, id, link, content })
+            // check exists file
+            try {
+                if (fs.existsSync(filePath)) {
+                    let content = fs.readFileSync(filePath,
+                        { encoding: 'utf8', flag: 'r' })
+                    remapGeneratedFiles.push({ fileName, id, link, content })
+                }
+            } catch (error) {
+                console.log(`File ${fieldName} not exists!`)
+            }
         })
         res.render('sharedGeneratedData', { remapGeneratedFiles })
     }
