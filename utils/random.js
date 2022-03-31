@@ -2,6 +2,7 @@
 const DEFAULT_MIN_NUMBER = -5000000
 const DEFAULT_MAX_NUMBER = +10000000
 const DEFAULT_STRING_LENGTH = 30
+const DEFAULT_ARRAY_LENGTH = 1
 const LOWER_CHARACTER = 'abcdefghijklmnopqrstuvwxyz'
 const UPPER_CHARACTER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 const NUMERIC = '0123456789'
@@ -209,29 +210,70 @@ let randomInASet = (set, amount) => {
 // random a element from a set
 let randomOneInASet = set => randomInASet(set, 1)[0]
 
+// random object
+/**
+ * @typedef Property a property of object
+ * @property {string} name name property
+ * @property {object} datatype datatype for each property
+ * @param {Array<Property>} properties list properties
+ * @returns {object} object have been random
+ */
+let randomObject = (properties) => {
+    if (!Array.isArray(properties)) return {}
+    let resultObject = {}
+    properties.forEach(property => {
+        if (property.name) {
+            resultObject[property.name] =
+                randomWithTemplate(property.datatype)
+        }
+    })
+    return resultObject
+}
+
+let randomArray = (
+    elementDatatype,
+    minAmount = DEFAULT_ARRAY_LENGTH,
+    maxAmount = DEFAULT_ARRAY_LENGTH
+) => {
+    let arrayLength =
+        randomIntegerNumber(minAmount, maxAmount)
+    const resultArray = []
+    for (let i = 0; i < arrayLength; i++) {
+        resultArray.push(randomWithTemplate(elementDatatype))
+    }
+    return resultArray
+}
+
 /**
  * It does random follow template.
  * Include a array of objects each object as type to random
  * Currently have:
- * number [properties: min, max, isInt]
- * string [properties: size, haveLower, haveUpper, haveNumeric]
- * date [properties: minDate, maxDate]
- * name [properties: isMale]
- * address [not property]
- * set [properties: set]
- * freedom (properties: value)
+ * number   [options: min, max, isInt]
+ * string   [options: size, haveLower, haveUpper, haveNumeric]
+ * date     [options: minDate, maxDate]
+ * name     [options: isMale]
+ * address  [not option]
+ * set      [options: set]
+ * freedom  [options: value]
+ * template [options: template]
+ * object:  [options: properties]
+ * array:   [options: elementDatatype, minAmount, maxAmount]
  */
 
 let randomWithTemplate = (template) => {
 
+    if (!template) return ''
+
+    if (!Array.isArray(template))
+        template = [template]
+
     let randomResult = ''
+    for (simpleType of template) {
+        let { type, options } = simpleType
 
-    if (template) {
-        if (!Array.isArray(template))
-            template = [template]
+        if (!options) options = {}
 
-        for (simpleType of template) {
-            let { type, options } = simpleType
+        if (type && options)
             switch (type) {
                 case 'number':
                     let { min, max, isInt } = options
@@ -258,13 +300,23 @@ let randomWithTemplate = (template) => {
                 case 'freedom':
                     randomResult += options.value
                     break
+                case 'object':
+                    // don't convert object to string
+                    let { properties } = options
+                    randomResult = randomObject(properties)
+                    break
+                case 'array':
+                    // don't convert array to string
+                    let { elementDatatype, minAmount, maxAmount } = options
+                    randomResult =
+                        randomArray(elementDatatype, minAmount, maxAmount)
+                    break
                 case 'template':
                     randomResult += randomWithTemplate(options.template)
                     break
                 default:
                     break
             }
-        }
     }
     return randomResult
 }
