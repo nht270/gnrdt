@@ -5,7 +5,12 @@ let {
     IMPORTANT_LEVEL_REFERENCE
 } = require('./preGenerate')
 
+// for datatype
 const { DEFAULT_STRING_LENGTH } = require('./random')
+
+// for sql database
+const DEFAULT_TABLE_ENGINE = 'InnoDB'
+const DEFAULT_TABLE_CHARSET = 'utf8'
 
 // for decoration
 // number of spaces for a tab
@@ -94,7 +99,8 @@ let codeCreateTable = (table, constraints, dropTable) => {
         sqlCreateTable += `,\n${TAB}${codeConstraints}`
     }
 
-    sqlCreateTable += '\n)ENGINE=InnoDB DEFAULT CHARSET=latin1;\n\n'
+    sqlCreateTable += `\n)ENGINE=${DEFAULT_TABLE_ENGINE}` +
+        ` DEFAULT CHARSET=${DEFAULT_TABLE_CHARSET};\n\n`
     return sqlCreateTable
 }
 
